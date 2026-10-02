@@ -276,12 +276,6 @@ textarea{resize:vertical;min-height:70px}
       <div class="nav-item" data-page="horas">🕐 Horas</div>
     </nav>
     <div class="sidebar-footer">
-      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
-        <button onclick="exportarDadosDemandas()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.65);font-size:11px;padding:6px 10px;border-radius:6px;cursor:pointer;text-align:left;font-family:inherit">⬇ Exportar dados</button>
-        <label style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.65);font-size:11px;padding:6px 10px;border-radius:6px;cursor:pointer;text-align:left;display:block">⬆ Importar dados
-          <input type="file" accept=".json" onchange="importarDadosDemandas(event)" style="display:none">
-        </label>
-      </div>
       <p>Obliant · Admin</p>
     </div>
   </aside>
@@ -641,33 +635,6 @@ function toast(msg){
   t.textContent=msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2200);
-}
-const MIGRACAO_KEYS=['admin_demandas_v1','admin_demandas_seq_v1','admin_demandas_projetos_custom_v1','admin_novos_projetos_v1'];
-function exportarDadosDemandas(){
-  const data={};
-  MIGRACAO_KEYS.forEach(k=>{ const v=localStorage.getItem(k); if(v!==null) data[k]=v; });
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='demandas-pmo-backup-'+new Date().toISOString().slice(0,10)+'.json';
-  a.click();
-  toast('Backup baixado!');
-}
-function importarDadosDemandas(event){
-  const file=event.target.files[0];
-  if(!file) return;
-  const reader=new FileReader();
-  reader.onload=()=>{
-    try{
-      const data=JSON.parse(reader.result);
-      MIGRACAO_KEYS.forEach(k=>{ if(data[k]!==undefined) localStorage.setItem(k,data[k]); });
-      toast('Dados importados! Recarregando...');
-      setTimeout(()=>location.reload(),1200);
-    }catch(e){
-      toast('Arquivo inválido');
-    }
-  };
-  reader.readAsText(file);
 }
 function priorityPillClass(p){
   if(p==='Alta')return 'pill-alta';
