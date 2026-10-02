@@ -1565,17 +1565,13 @@ function lerProjetosHoras(){
 function renderAlocacaoResumo(){
   const el=document.getElementById('alocacaoResumo');
   const hoje=todayStr();
-  const mk=mesAtualKey();
 
   const projsHoras=lerProjetosHoras();
   const ativosHoras=projsHoras.filter(p=>p.ini<=hoje&&hoje<=p.fim);
-  const horasConfirmadas=ativosHoras.reduce((s,p)=>s+((p.mensal&&p.mensal[mk])||0),0);
 
   const emNegociacao=novosProjetos.filter(p=>p.status==='negociacao');
-  const horasNegociacao=emNegociacao.reduce((s,p)=>s+(parseFloat(p.horasMes)||0),0);
 
   const totalProjetos=ativosHoras.length+emNegociacao.length;
-  const totalHoras=horasConfirmadas+horasNegociacao;
 
   const semDadosHoras=projsHoras.length===0;
 
@@ -1591,10 +1587,6 @@ function renderAlocacaoResumo(){
     <div class="aloc-item">
       <span class="aloc-label">Em prospecção</span>
       <span class="aloc-value">${emNegociacao.length}</span>
-    </div>
-    <div class="aloc-item highlight">
-      <span class="aloc-label">Total previsto este mês</span>
-      <span class="aloc-value">${totalHoras}h</span>
     </div>
     ${semDadosHoras?'<span class="aloc-note">Sem dados do Apontamento de Horas ainda neste navegador — os confirmados aparecem aqui assim que forem cadastrados na aba Horas.</span>':''}
   `;
