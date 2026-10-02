@@ -36,7 +36,7 @@ body{font-family:'DM Sans',sans-serif;background:#f0f7f4;color:var(--text);min-h
 .main{margin-left:240px;flex:1;min-height:100vh}
 .page-content{display:none;padding:32px;padding-bottom:100px}
 .page-content.active{display:block}
-#page-horas.active,#page-pmtool.active{display:flex;flex-direction:column;padding:0;height:100vh;position:sticky;top:0}
+#page-horas.active{display:flex;flex-direction:column;padding:0;height:100vh;position:sticky;top:0}
 .horas-fallback{flex:0 0 auto;font-size:12px;color:var(--text2);padding:8px 16px;background:var(--surface2);border-bottom:1px solid var(--border)}
 .horas-fallback a{color:var(--accent);font-weight:600}
 .horas-iframe{display:block;width:100%;border:0;flex:1 1 auto;min-height:0}
@@ -273,7 +273,6 @@ textarea{resize:vertical;min-height:70px}
       <div class="nav-item active" data-page="demandas">📋 Demandas PMO</div>
       <div class="nav-item" data-page="novosprojetos">🆕 Novos Projetos</div>
       <div class="nav-item" data-page="horas">🕐 Horas</div>
-      <div class="nav-item" data-page="pmtool">🗂️ PM Tool</div>
     </nav>
     <div class="sidebar-footer">
       <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px">
@@ -379,14 +378,6 @@ textarea{resize:vertical;min-height:70px}
         <strong style="color:var(--text)">A ferramenta de Apontamento de Horas ainda é só local.</strong><br>
         Essa versão publicada (GitHub Pages) não consegue abrir um arquivo do seu computador — é uma restrição de segurança do navegador. Pra lançar horas, abra o arquivo local de sempre no seu computador (<em>Demandas_PMO.html</em> na pasta <em>NF Prestação Serviço 2026</em>).
       </div>
-    </div>
-
-    <div class="page-content" id="page-pmtool">
-      <div class="horas-fallback">
-        Se a tela do PM Tool não aparecer abaixo, o navegador bloqueou o carregamento —
-        <a href="https://obliant.github.io/pmtool/" target="_blank">clique aqui para abrir em outra aba</a>.
-      </div>
-      <iframe id="pmtoolFrame" class="horas-iframe" src="https://obliant.github.io/pmtool/"></iframe>
     </div>
   </main>
 </div>
