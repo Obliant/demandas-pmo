@@ -375,10 +375,11 @@ textarea{resize:vertical;min-height:70px}
 
     <div class="page-content" id="page-horas">
       <div class="alocacao-resumo" id="alocacaoResumo"></div>
-      <div class="card" style="padding:20px 24px;margin:0 24px 24px;background:var(--surface2);border-radius:var(--rl);font-size:13px;color:var(--text2);line-height:1.7">
-        <strong style="color:var(--text)">A ferramenta de Apontamento de Horas ainda é só local.</strong><br>
-        Essa versão publicada (GitHub Pages) não consegue abrir um arquivo do seu computador — é uma restrição de segurança do navegador. Pra lançar horas, abra o arquivo local de sempre no seu computador (<em>Demandas_PMO.html</em> na pasta <em>NF Prestação Serviço 2026</em>).
+      <div class="horas-fallback">
+        Se a tela de Horas não aparecer abaixo —
+        <a href="https://obliant.github.io/apontamento-horas/" target="_blank">clique aqui para abrir em outra aba</a>.
       </div>
+      <iframe id="horasFrame" class="horas-iframe" src="https://obliant.github.io/apontamento-horas/"></iframe>
     </div>
   </main>
 </div>
