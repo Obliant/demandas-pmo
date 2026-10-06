@@ -1185,7 +1185,7 @@ function addChecklistSubItem(demandaId,texto){
   const d=demandas.find(x=>x.id===demandaId);
   if(!d||!texto.trim())return;
   if(!d.checklist)d.checklist=[];
-  d.checklist.push({id:uid(),texto:texto.trim(),done:false,ts:new Date().toISOString()});
+  d.checklist.unshift({id:uid(),texto:texto.trim(),done:false,ts:new Date().toISOString()});
   d.updatedAt=new Date().toISOString();
   save();
   renderAll();
@@ -1323,7 +1323,7 @@ function addQuickChecklistItem(){
   const txt=input.value.trim();
   if(!d||!txt)return;
   if(!d.checklist)d.checklist=[];
-  d.checklist.push({id:uid(),texto:txt,done:false,ts:new Date().toISOString()});
+  d.checklist.unshift({id:uid(),texto:txt,done:false,ts:new Date().toISOString()});
   d.updatedAt=new Date().toISOString();
   save();
   input.value='';
