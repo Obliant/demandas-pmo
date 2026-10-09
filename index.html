@@ -135,7 +135,7 @@ table{border-collapse:collapse;width:100%;min-width:760px}
 th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
 th{background:var(--surface2);color:var(--text3);font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
 tbody tr{cursor:pointer}
-tbody tr:not([class*="tr-cor-"]):hover td{background:var(--bg)}
+tbody tr:not([class*="tr-cor-"]):not(.tr-alta):hover td{background:var(--bg)}
 tbody tr:last-child td{border-bottom:none}
 .stbadge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
 .stbadge-afazer{background:var(--surface2);color:var(--text2)}
@@ -183,6 +183,9 @@ tbody tr:last-child td{border-bottom:none}
 .cor-toggle-btn:hover{border-color:var(--danger);color:var(--danger)}
 .cor-toggle-btn.active{background:var(--danger-l);border-color:var(--danger);color:var(--danger);font-weight:600}
 .tr-cor-red{background:var(--danger-l)!important}
+.tr-alta{background:var(--danger-l)!important}
+.tr-alta td:first-child{box-shadow:inset 4px 0 0 var(--danger)}
+.tr-alta .task-cell .field-quick-edit{font-weight:600;color:var(--danger)}
 .kcard-cor-red{background:var(--danger-l)}
 input[type=text],input[type=date],select,textarea{width:100%;padding:8px 12px;font-size:13px;font-family:'DM Sans',sans-serif;border:1px solid var(--border-md);border-radius:var(--r);background:var(--bg);color:var(--text);outline:none;transition:border-color .15s}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,106,79,.1)}
@@ -757,6 +760,16 @@ function cardHtml(d){
   </div>`;
 }
 
+// Tabela: ordem pela data de abertura (Solicitada em), a mais recente sempre no topo
+function sortByAbertura(list){
+  const chave=d=>(d.dataSolicitacao||(d.createdAt||'').slice(0,10)||'');
+  return list.slice().sort((a,b)=>{
+    const c=chave(b).localeCompare(chave(a));
+    if(c!==0)return c;
+    return (b.createdAt||'').localeCompare(a.createdAt||'');
+  });
+}
+
 function renderKanban(){
   const list=getFiltered();
   const cols=[
@@ -781,8 +794,11 @@ function renderKanban(){
 }
 
 function tabelaRowHtml(d){
+  // prioridade Alta (em aberto) destaca a linha em vermelho automaticamente
+  const alta=d.prioridade==='Alta'&&d.status!=='concluido'&&d.status!=='cancelado';
+  const cls=[d.cor?'tr-cor-'+d.cor:'',alta?'tr-alta':''].filter(Boolean).join(' ');
   return `
-    <tr data-id="${d.id}" class="${d.cor?'tr-cor-'+d.cor:''}">
+    <tr data-id="${d.id}" class="${cls}">
       <td class="mono">${d.codigo?'#'+d.codigo:'—'}</td>
       <td><span class="pill tipo-quick-edit ${tipoPillClass(d)}" data-id="${d.id}" title="Clique para editar">${tipoLabel(d)}</span></td>
       <td class="task-cell">${checklistRowToggleHtml(d)}<span class="field-quick-edit" data-id="${d.id}" data-field="nome" title="Clique para editar">${escapeHtml(d.nome)}</span></td>
@@ -823,7 +839,7 @@ function secaoColapsavel(key,icone,titulo,items){
 }
 
 function renderTabela(){
-  const list=sortByPriority(getFiltered());
+  const list=sortByAbertura(getFiltered());
   const ativas=list.filter(d=>d.status!=='concluido'&&d.status!=='cancelado');
   const concluidas=list.filter(d=>d.status==='concluido');
   const canceladas=list.filter(d=>d.status==='cancelado');
