@@ -416,6 +416,7 @@ textarea{resize:vertical;min-height:70px}
           <label>Qual projeto?</label>
           <select id="fProjetoSel"></select>
           <input type="text" id="fProjetoOutro" placeholder="Nome do projeto" style="margin-top:8px;display:none">
+          <button type="button" class="btn btn-sm btn-danger" id="btnRemoverProjeto" style="margin-top:8px;display:none"></button>
         </div>
 
         <div class="form-row">
@@ -687,6 +688,27 @@ function toggleProjetoNomeField(){
 }
 function toggleProjetoOutro(){
   document.getElementById('fProjetoOutro').style.display=document.getElementById('fProjetoSel').value==='__outro__'?'block':'none';
+  // só os projetos que você mesma criou (via "Outro") podem ser apagados da lista
+  const atual=document.getElementById('fProjetoSel').value;
+  const btn=document.getElementById('btnRemoverProjeto');
+  const custom=loadProjetosCustom().includes(atual);
+  btn.style.display=custom?'inline-flex':'none';
+  if(custom)btn.textContent=`Apagar "${atual}" da lista de projetos`;
+}
+function removerProjetoCustom(){
+  const nome=document.getElementById('fProjetoSel').value;
+  if(!loadProjetosCustom().includes(nome))return;
+  const usos=demandas.filter(d=>d.tipo==='Projeto'&&d.projetoNome===nome).length;
+  const aviso=usos?`\n\n${usos} demanda${usos>1?'s':''} já usa${usos>1?'m':''} esse nome e continua${usos>1?'m':''} com ele (edite ou exclua ${usos>1?'cada uma':'a demanda'} se precisar).`:'';
+  if(!confirm(`Apagar o projeto "${nome}" da lista?${aviso}`))return;
+  saveProjetosCustom(loadProjetosCustom().filter(p=>p!==nome));
+  populateProjetoSelect();
+  // não troca por outro projeto em silêncio: deixa em "Outro" pra escolher/digitar o certo
+  document.getElementById('fProjetoSel').value='__outro__';
+  document.getElementById('fProjetoOutro').value='';
+  toggleProjetoOutro();
+  document.getElementById('fProjetoOutro').focus();
+  toast('Projeto apagado da lista — escolha o projeto certo desta demanda');
 }
 function getProjetoNomeValue(){
   const sel=document.getElementById('fProjetoSel').value;
@@ -1905,6 +1927,7 @@ document.getElementById('fSearch').addEventListener('input',renderAll);
 document.getElementById('fTipo').addEventListener('change',renderAll);
 document.getElementById('fTipoSel').addEventListener('change',toggleProjetoNomeField);
 document.getElementById('fProjetoSel').addEventListener('change',toggleProjetoOutro);
+document.getElementById('btnRemoverProjeto').addEventListener('click',removerProjetoCustom);
 document.querySelectorAll('.tab').forEach(tab=>{
   tab.addEventListener('click',()=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
