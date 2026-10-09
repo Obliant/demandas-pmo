@@ -888,9 +888,11 @@ function renderTabela(){
     el.addEventListener('click',e=>{
       e.stopPropagation();
       const id=el.dataset.id;
-      if(checklistExpandedRows.has(id))checklistExpandedRows.delete(id);
-      else checklistExpandedRows.add(id);
+      const abrindo=!checklistExpandedRows.has(id);
+      if(abrindo)checklistExpandedRows.add(id);
+      else checklistExpandedRows.delete(id);
       renderTabela();
+      if(abrindo)focusSubrowInput(id);
     });
   });
   document.querySelectorAll('#viewTabela .checklist-subrow').forEach(tr=>{
@@ -1091,7 +1093,7 @@ function renderComments(){
     el.innerHTML='<div class="comment-empty">Nenhum comentário ainda.</div>';
     return;
   }
-  const sorted=currentComments.slice().sort((a,b)=>b.ts.localeCompare(a.ts));
+  const sorted=currentComments.slice().sort((a,b)=>((a.done?1:0)-(b.done?1:0))||b.ts.localeCompare(a.ts));
   el.innerHTML=sorted.map(c=>`
     <div class="comment-item ${c.done?'done':''}">
       <div class="comment-item-top">
@@ -1150,7 +1152,9 @@ function checklistItemRowHtml(d,c){
 }
 function checklistSubRowsHtml(d){
   const items=d.checklist||[];
-  const itemRows=items.map(c=>checklistItemRowHtml(d,c)).join('');
+  // em aberto no topo (mais novas primeiro); as feitas descem pro fim
+  const ordenados=items.filter(c=>!c.done).concat(items.filter(c=>c.done));
+  const itemRows=ordenados.map(c=>checklistItemRowHtml(d,c)).join('');
   const addRow=`<tr class="checklist-subrow checklist-addrow" data-parent="${d.id}">
     <td colspan="10">
       <div class="checklist-subrow-content checklist-subrow-add">
@@ -1196,6 +1200,11 @@ function addChecklistSubItem(demandaId,texto){
   d.updatedAt=new Date().toISOString();
   save();
   renderAll();
+  focusSubrowInput(demandaId); // cursor volta pra caixinha, pronto pra próxima subtarefa
+}
+function focusSubrowInput(demandaId){
+  const input=document.querySelector(`#viewTabela .checklist-subrow-input[data-id="${demandaId}"]`);
+  if(input)input.focus();
 }
 
 let quickChecklistId=null;
