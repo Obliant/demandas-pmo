@@ -830,7 +830,6 @@ function tabelaRowHtml(d){
       <td class="mono">${d.codigo?'#'+d.codigo:'—'}</td>
       <td><span class="pill tipo-quick-edit ${tipoPillClass(d)}" data-id="${d.id}" title="Clique para abrir os detalhes">${tipoLabel(d)}</span></td>
       <td class="task-cell">${checklistRowToggleHtml(d)}<span class="field-quick-edit" data-id="${d.id}" data-field="nome" title="Clique para abrir os detalhes">${escapeHtml(d.nome)}</span></td>
-      <td><span class="field-quick-edit" data-id="${d.id}" data-field="solicitante" title="Clique para abrir os detalhes">${escapeHtml(d.solicitante||'—')}</span></td>
       <td><span class="field-quick-edit" data-id="${d.id}" data-field="dataSolicitacao" title="Clique para abrir os detalhes">${d.dataSolicitacao?fmtDate(d.dataSolicitacao):'—'}</span></td>
       <td><select class="pill pill-select ${priorityPillClass(d.prioridade)}" data-id="${d.id}" data-field="prioridade">
         <option value="Alta" ${d.prioridade==='Alta'?'selected':''}>Alta</option>
@@ -851,7 +850,7 @@ function tabelaRowHtml(d){
 // colunas da tabela: largura inicial (px) e, depois, a que você arrastar (fica salva)
 const COLS_KEY='admin_demandas_colw_v1';
 const COLS=[
-  {k:'cod',l:'#',w:56},{k:'tipo',l:'Tipo',w:170},{k:'tarefa',l:'Tarefa',w:340},{k:'solic',l:'Solicitante',w:120},
+  {k:'cod',l:'#',w:56},{k:'tipo',l:'Tipo',w:170},{k:'tarefa',l:'Tarefa',w:340},
   {k:'data',l:'Solicitada em',w:110},{k:'prio',l:'Prioridade',w:95},{k:'status',l:'Status',w:130},
   {k:'prazo',l:'Prazo',w:105},{k:'coment',l:'Comentários',w:105},{k:'del',l:'',w:44,fixa:true}
 ];
@@ -1223,7 +1222,7 @@ function checklistItemRowHtml(d,c){
     ? `<input type="text" class="checklist-subrow-edit-input" data-id="${d.id}" data-item="${c.id}" value="${escapeHtml(c.texto)}">`
     : `<span class="checklist-subrow-text" data-id="${d.id}" data-item="${c.id}" title="Clique para editar">${escapeHtml(c.texto)}</span>`;
   return `<tr class="checklist-subrow" data-parent="${d.id}" data-item="${c.id}" data-open="${c.done?'0':'1'}">
-    <td colspan="10">
+    <td colspan="9">
       <div class="checklist-subrow-content ${c.done?'done':''}">
         ${c.done?'<span class="checklist-drag-ph"></span>':'<span class="checklist-drag" title="Arraste para mudar a ordem">⋮⋮</span>'}
         <input type="checkbox" class="checklist-subrow-check" data-id="${d.id}" data-item="${c.id}" ${c.done?'checked':''}>
@@ -1240,7 +1239,7 @@ function checklistSubRowsHtml(d){
   const ordenados=items.filter(c=>!c.done).concat(items.filter(c=>c.done));
   const itemRows=ordenados.map(c=>checklistItemRowHtml(d,c)).join('');
   const addRow=`<tr class="checklist-subrow checklist-addrow" data-parent="${d.id}">
-    <td colspan="10">
+    <td colspan="9">
       <div class="checklist-subrow-content checklist-subrow-add">
         <input type="text" class="checklist-subrow-input" data-id="${d.id}" placeholder="Adicionar subtarefa…">
         <button class="btn btn-sm checklist-subrow-addbtn" data-id="${d.id}">+ Adicionar</button>
