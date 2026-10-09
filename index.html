@@ -798,10 +798,10 @@ function tabelaRowHtml(d){
   return `
     <tr data-id="${d.id}" class="${cls}">
       <td class="mono">${d.codigo?'#'+d.codigo:'—'}</td>
-      <td><span class="pill tipo-quick-edit ${tipoPillClass(d)}" data-id="${d.id}" title="Clique para editar">${tipoLabel(d)}</span></td>
-      <td class="task-cell">${checklistRowToggleHtml(d)}<span class="field-quick-edit" data-id="${d.id}" data-field="nome" title="Clique para editar">${escapeHtml(d.nome)}</span></td>
-      <td><span class="field-quick-edit" data-id="${d.id}" data-field="solicitante" title="Clique para editar">${escapeHtml(d.solicitante||'—')}</span></td>
-      <td><span class="field-quick-edit" data-id="${d.id}" data-field="dataSolicitacao" title="Clique para editar">${d.dataSolicitacao?fmtDate(d.dataSolicitacao):'—'}</span></td>
+      <td><span class="pill tipo-quick-edit ${tipoPillClass(d)}" data-id="${d.id}" title="Clique para abrir os detalhes">${tipoLabel(d)}</span></td>
+      <td class="task-cell">${checklistRowToggleHtml(d)}<span class="field-quick-edit" data-id="${d.id}" data-field="nome" title="Clique para abrir os detalhes">${escapeHtml(d.nome)}</span></td>
+      <td><span class="field-quick-edit" data-id="${d.id}" data-field="solicitante" title="Clique para abrir os detalhes">${escapeHtml(d.solicitante||'—')}</span></td>
+      <td><span class="field-quick-edit" data-id="${d.id}" data-field="dataSolicitacao" title="Clique para abrir os detalhes">${d.dataSolicitacao?fmtDate(d.dataSolicitacao):'—'}</span></td>
       <td><select class="pill pill-select ${priorityPillClass(d.prioridade)}" data-id="${d.id}" data-field="prioridade">
         <option value="Alta" ${d.prioridade==='Alta'?'selected':''}>Alta</option>
         <option value="Média" ${d.prioridade==='Média'?'selected':''}>Média</option>
@@ -813,7 +813,7 @@ function tabelaRowHtml(d){
         <option value="concluido" ${d.status==='concluido'?'selected':''}>Concluído</option>
         <option value="cancelado" ${d.status==='cancelado'?'selected':''}>Cancelado</option>
       </select></td>
-      <td><span class="field-quick-edit" data-id="${d.id}" data-field="prazo" title="Clique para editar">${d.prazo?fmtDate(d.prazo):'—'}</span> ${isAtrasada(d)?'<span class="pill pill-atrasada">Atrasada</span>':''}</td>
+      <td><span class="field-quick-edit" data-id="${d.id}" data-field="prazo" title="Clique para abrir os detalhes">${d.prazo?fmtDate(d.prazo):'—'}</span> ${isAtrasada(d)?'<span class="pill pill-atrasada">Atrasada</span>':''}</td>
       <td>${(d.comentarios||[]).length}</td>
       <td><button class="row-delete" data-id="${d.id}" title="Excluir demanda">×</button></td>
     </tr>${checklistExpandedRows.has(d.id)?checklistSubRowsHtml(d):''}`;
@@ -876,18 +876,6 @@ function renderTabela(){
     btn.addEventListener('click',e=>{
       e.stopPropagation();
       removeDemanda(btn.dataset.id);
-    });
-  });
-  document.querySelectorAll('#viewTabela .tipo-quick-edit').forEach(el=>{
-    el.addEventListener('click',e=>{
-      e.stopPropagation();
-      openTipoQuickEdit(el.dataset.id,el);
-    });
-  });
-  document.querySelectorAll('#viewTabela .field-quick-edit').forEach(el=>{
-    el.addEventListener('click',e=>{
-      e.stopPropagation();
-      openFieldQuickEdit(el.dataset.id,el.dataset.field,el);
     });
   });
   document.querySelectorAll('#viewTabela .checklist-row-toggle').forEach(el=>{
