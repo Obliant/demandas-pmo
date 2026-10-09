@@ -125,6 +125,12 @@ tr.checklist-subrow td{padding:0;border-top:none}
 .checklist-subrow-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;line-height:1;padding:2px 4px}
 .checklist-subrow-del:hover{color:var(--danger)}
 .checklist-subrow-add{padding-left:40px}
+.checklist-drag{cursor:grab;color:var(--text3);font-size:15px;line-height:1;width:14px;margin-left:-6px;user-select:none;text-align:center;flex-shrink:0}
+.checklist-drag:hover{color:var(--accent)}
+.checklist-drag-ph{width:14px;margin-left:-6px;flex-shrink:0}
+tr.checklist-subrow.dragging{opacity:.4}
+tr.checklist-subrow.drop-before td{box-shadow:inset 0 2px 0 var(--accent)}
+tr.checklist-subrow.drop-after td{box-shadow:inset 0 -2px 0 var(--accent)}
 .checklist-subrow-input,.checklist-subrow-edit-input{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:12.5px;font-family:inherit;background:var(--bg)}
 .checklist-subrow-input:focus,.checklist-subrow-edit-input:focus{outline:none;border-color:var(--accent)}
 .checklist-subrow-addbtn{font-size:11.5px;padding:5px 12px}
@@ -1139,9 +1145,10 @@ function checklistItemRowHtml(d,c){
   const textHtml=editing
     ? `<input type="text" class="checklist-subrow-edit-input" data-id="${d.id}" data-item="${c.id}" value="${escapeHtml(c.texto)}">`
     : `<span class="checklist-subrow-text" data-id="${d.id}" data-item="${c.id}" title="Clique para editar">${escapeHtml(c.texto)}</span>`;
-  return `<tr class="checklist-subrow" data-parent="${d.id}">
+  return `<tr class="checklist-subrow" data-parent="${d.id}" data-item="${c.id}" data-open="${c.done?'0':'1'}">
     <td colspan="10">
       <div class="checklist-subrow-content ${c.done?'done':''}">
+        ${c.done?'<span class="checklist-drag-ph"></span>':'<span class="checklist-drag" title="Arraste para mudar a ordem">⋮⋮</span>'}
         <input type="checkbox" class="checklist-subrow-check" data-id="${d.id}" data-item="${c.id}" ${c.done?'checked':''}>
         ${textHtml}
         ${c.ts?`<span class="checklist-subrow-date">${fmtDate(c.ts.slice(0,10))}</span>`:''}
@@ -1165,6 +1172,61 @@ function checklistSubRowsHtml(d){
   </tr>`;
   return itemRows+addRow;
 }
+// arrastar subtarefa: solta antes/depois de outra subtarefa em aberto da mesma demanda
+function moveChecklistItem(demandaId,itemId,targetId,after){
+  const d=demandas.find(x=>x.id===demandaId);
+  if(!d||!d.checklist||itemId===targetId)return;
+  const item=d.checklist.find(x=>x.id===itemId);
+  if(!item)return;
+  d.checklist=d.checklist.filter(x=>x.id!==itemId);
+  const i=d.checklist.findIndex(x=>x.id===targetId);
+  if(i<0)return;
+  d.checklist.splice(i+(after?1:0),0,item);
+  d.updatedAt=new Date().toISOString();
+  save();
+  renderAll();
+}
+(function(){
+  const view=document.getElementById('viewTabela');
+  let drag=null;
+  const limpa=()=>view.querySelectorAll('.drop-before,.drop-after,.dragging').forEach(el=>el.classList.remove('drop-before','drop-after','dragging'));
+  const alvo=e=>e.target.closest&&e.target.closest('tr.checklist-subrow[data-open="1"]');
+  view.addEventListener('mousedown',e=>{
+    const h=e.target.closest&&e.target.closest('.checklist-drag');
+    if(h)h.closest('tr').draggable=true;
+  });
+  view.addEventListener('dragstart',e=>{
+    const tr=e.target.closest&&e.target.closest('tr.checklist-subrow[data-open="1"]');
+    if(!tr||!tr.draggable)return;
+    drag={demanda:tr.dataset.parent,item:tr.dataset.item};
+    e.dataTransfer.effectAllowed='move';
+    e.dataTransfer.setData('text/plain',drag.item);
+    tr.classList.add('dragging');
+  });
+  view.addEventListener('dragover',e=>{
+    const tr=alvo(e);
+    if(!drag||!tr||tr.dataset.parent!==drag.demanda||tr.dataset.item===drag.item)return;
+    e.preventDefault();
+    view.querySelectorAll('.drop-before,.drop-after').forEach(el=>el.classList.remove('drop-before','drop-after'));
+    const r=tr.getBoundingClientRect();
+    tr.classList.add(e.clientY>r.top+r.height/2?'drop-after':'drop-before');
+  });
+  view.addEventListener('drop',e=>{
+    const tr=alvo(e);
+    if(!drag||!tr||tr.dataset.parent!==drag.demanda)return;
+    e.preventDefault();
+    const r=tr.getBoundingClientRect();
+    const d=drag; drag=null; limpa();
+    moveChecklistItem(d.demanda,d.item,tr.dataset.item,e.clientY>r.top+r.height/2);
+  });
+  document.addEventListener('dragend',()=>{
+    drag=null; limpa();
+    view.querySelectorAll('tr.checklist-subrow[draggable="true"]').forEach(tr=>tr.draggable=false);
+  });
+  document.addEventListener('mouseup',()=>{
+    view.querySelectorAll('tr.checklist-subrow[draggable="true"]').forEach(tr=>tr.draggable=false);
+  });
+})();
 function toggleChecklistSubItem(demandaId,itemId,done){
   const d=demandas.find(x=>x.id===demandaId);
   const item=d&&(d.checklist||[]).find(x=>x.id===itemId);
