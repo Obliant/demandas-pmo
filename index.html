@@ -140,6 +140,14 @@ tr.checklist-subrow.drop-after td{box-shadow:inset 0 -2px 0 var(--accent)}
 table{border-collapse:collapse;width:100%;min-width:760px}
 th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
 th{background:var(--surface2);color:var(--text3);font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+table.tabela-demandas{table-layout:fixed;width:100%;min-width:0}
+table.tabela-demandas td:last-child:not([colspan]){text-align:right}
+table.tabela-demandas th{position:relative}
+table.tabela-demandas td{overflow-wrap:anywhere}
+.col-resizer{position:absolute;top:0;right:-4px;width:9px;height:100%;cursor:col-resize;z-index:2;user-select:none}
+.col-resizer::after{content:'';position:absolute;top:22%;bottom:22%;left:4px;width:2px;border-radius:2px;background:var(--border-md);transition:background .12s}
+.col-resizer:hover::after,.col-resizer.ativo::after{background:var(--accent)}
+body.redimensionando{cursor:col-resize;user-select:none}
 tbody tr{cursor:pointer}
 tbody tr:not(.tr-alta):hover td{background:var(--bg)}
 tbody tr:last-child td{border-bottom:none}
@@ -840,7 +848,66 @@ function tabelaRowHtml(d){
       <td><button class="row-delete" data-id="${d.id}" title="Excluir demanda">×</button></td>
     </tr>${checklistExpandedRows.has(d.id)?checklistSubRowsHtml(d):''}`;
 }
-const TABELA_HEAD=`<thead><tr><th>#</th><th>Tipo</th><th>Tarefa</th><th>Solicitante</th><th>Solicitada em</th><th>Prioridade</th><th>Status</th><th>Prazo</th><th>Comentários</th><th></th></tr></thead>`;
+// colunas da tabela: largura inicial (px) e, depois, a que você arrastar (fica salva)
+const COLS_KEY='admin_demandas_colw_v1';
+const COLS=[
+  {k:'cod',l:'#',w:56},{k:'tipo',l:'Tipo',w:170},{k:'tarefa',l:'Tarefa',w:340},{k:'solic',l:'Solicitante',w:120},
+  {k:'data',l:'Solicitada em',w:110},{k:'prio',l:'Prioridade',w:95},{k:'status',l:'Status',w:130},
+  {k:'prazo',l:'Prazo',w:105},{k:'coment',l:'Comentários',w:105},{k:'del',l:'',w:44,fixa:true}
+];
+function colWidths(){
+  let salvo={};
+  try{salvo=JSON.parse(localStorage.getItem(COLS_KEY))||{}}catch(e){}
+  const w={};
+  COLS.forEach(c=>{w[c.k]=Math.max(40,Math.min(900,parseInt(salvo[c.k],10)||c.w))});
+  return w;
+}
+function tabelaHead(){
+  const w=colWidths();
+  return `<colgroup>${COLS.map(c=>`<col data-col="${c.k}"${c.fixa?'':` style="width:${w[c.k]}px"`}>`).join('')}</colgroup>`
+    +`<thead><tr>${COLS.map(c=>`<th>${c.l}${c.fixa?'':`<span class="col-resizer" data-col="${c.k}" title="Arraste para ajustar a largura"></span>`}</th>`).join('')}</tr></thead>`;
+}
+function larguraTotalTabela(){
+  const w=colWidths();
+  return COLS.reduce((t,c)=>t+w[c.k],0);
+}
+(function(){
+  const view=document.getElementById('viewTabela');
+  let drag=null;
+  view.addEventListener('mousedown',e=>{
+    const h=e.target.closest&&e.target.closest('.col-resizer');
+    if(!h)return;
+    e.preventDefault();e.stopPropagation();
+    const k=h.dataset.col;
+    const col=view.querySelector(`col[data-col="${k}"]`);
+    drag={k,x:e.clientX,w:col?col.getBoundingClientRect().width:colWidths()[k],h};
+    h.classList.add('ativo');
+    document.body.classList.add('redimensionando');
+  });
+  document.addEventListener('mousemove',e=>{
+    if(!drag)return;
+    const nova=Math.max(40,Math.min(900,Math.round(drag.w+(e.clientX-drag.x))));
+    drag.nova=nova;
+    view.querySelectorAll(`col[data-col="${drag.k}"]`).forEach(c=>c.style.width=nova+'px');
+    const tot=larguraTotalTabela()-colWidths()[drag.k]+nova;
+    view.querySelectorAll('table.tabela-demandas').forEach(t=>t.style.minWidth=Math.max(tot,0)+'px');
+  });
+  document.addEventListener('mouseup',()=>{
+    if(!drag)return;
+    drag.h.classList.remove('ativo');
+    document.body.classList.remove('redimensionando');
+    if(drag.nova){
+      let salvo={};
+      try{salvo=JSON.parse(localStorage.getItem(COLS_KEY))||{}}catch(e){}
+      salvo[drag.k]=drag.nova;
+      localStorage.setItem(COLS_KEY,JSON.stringify(salvo));
+      view.querySelectorAll('table.tabela-demandas').forEach(t=>t.style.minWidth=larguraTotalTabela()+'px');
+    }
+    drag=null;
+  });
+  // um clique no resizer não pode abrir a demanda
+  view.addEventListener('click',e=>{ if(e.target.closest&&e.target.closest('.col-resizer'))e.stopPropagation(); },true);
+})();
 
 const secoesAbertas={abertas:true,concluidas:true,canceladas:true};
 function secaoColapsavel(key,icone,titulo,items,bodyClass='concluidas-body'){
@@ -853,7 +920,7 @@ function secaoColapsavel(key,icone,titulo,items,bodyClass='concluidas-body'){
         <span class="concluidas-caret">${aberta?'▾':'▸'}</span>
       </div>
       <div class="tablewrap ${bodyClass}" style="display:${aberta?'block':'none'}">
-        <table>${TABELA_HEAD}<tbody>${items.map(tabelaRowHtml).join('')}</tbody></table>
+        <table class="tabela-demandas" style="min-width:${larguraTotalTabela()}px">${tabelaHead()}<tbody>${items.map(tabelaRowHtml).join('')}</tbody></table>
       </div>
     </div>`;
 }
