@@ -135,7 +135,7 @@ table{border-collapse:collapse;width:100%;min-width:760px}
 th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
 th{background:var(--surface2);color:var(--text3);font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
 tbody tr{cursor:pointer}
-tbody tr:not([class*="tr-cor-"]):not(.tr-alta):hover td{background:var(--bg)}
+tbody tr:not(.tr-alta):hover td{background:var(--bg)}
 tbody tr:last-child td{border-bottom:none}
 .stbadge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
 .stbadge-afazer{background:var(--surface2);color:var(--text2)}
@@ -179,14 +179,11 @@ tbody tr:last-child td{border-bottom:none}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .form-group{margin-bottom:12px}
 .form-group label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:5px}
-.cor-toggle-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;border-radius:var(--r);cursor:pointer;border:1px solid var(--border-md);background:var(--surface);color:var(--text2);transition:all .15s}
-.cor-toggle-btn:hover{border-color:var(--danger);color:var(--danger)}
-.cor-toggle-btn.active{background:var(--danger-l);border-color:var(--danger);color:var(--danger);font-weight:600}
-.tr-cor-red{background:var(--danger-l)!important}
 .tr-alta{background:var(--danger-l)!important}
 .tr-alta td:first-child{box-shadow:inset 4px 0 0 var(--danger)}
 .tr-alta .task-cell .field-quick-edit{font-weight:600;color:var(--danger)}
-.kcard-cor-red{background:var(--danger-l)}
+.kcard-alta{background:var(--danger-l)}
+#fPrioridadeSel.sel-alta{background:var(--danger-l);border-color:var(--danger);color:var(--danger);font-weight:600}
 input[type=text],input[type=date],select,textarea{width:100%;padding:8px 12px;font-size:13px;font-family:'DM Sans',sans-serif;border:1px solid var(--border-md);border-radius:var(--r);background:var(--bg);color:var(--text);outline:none;transition:border-color .15s}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,106,79,.1)}
 textarea{resize:vertical;min-height:70px}
@@ -395,10 +392,6 @@ textarea{resize:vertical;min-height:70px}
 
     <div id="camposCompletosDemanda" class="modal-cols">
       <div class="modal-col">
-        <div class="form-group">
-          <button type="button" class="cor-toggle-btn" id="corToggle">🔴 Destacar linha em vermelho</button>
-        </div>
-
         <div class="form-row">
           <div class="form-group">
             <label>Quem solicitou</label>
@@ -596,10 +589,6 @@ let demandas=[];
 let currentId=null;
 let currentView='tabela';
 let currentComments=[];
-let currentCor='';
-function renderCorToggle(){
-  document.getElementById('corToggle').classList.toggle('active',currentCor==='red');
-}
 
 function load(){
   try{demandas=JSON.parse(localStorage.getItem(STORAGE_KEY))||[]}catch(e){demandas=[]}
@@ -742,7 +731,8 @@ function renderMetrics(){
 
 function cardHtml(d){
   const atrasada=isAtrasada(d);
-  return `<div class="kcard ${d.cor?'kcard-cor-'+d.cor:''}" draggable="true" data-id="${d.id}">
+  const altaAberta=d.prioridade==='Alta'&&d.status!=='concluido'&&d.status!=='cancelado';
+  return `<div class="kcard ${altaAberta?'kcard-alta':''}" draggable="true" data-id="${d.id}">
     <button class="kcard-delete" data-id="${d.id}" title="Excluir demanda">×</button>
     <div class="nome"><span class="field-quick-edit" data-id="${d.id}" data-field="nome" title="Clique para editar">${d.codigo?`<span class="codigo-tag">#${d.codigo}</span>`:''}${escapeHtml(d.nome)}</span></div>
     <div class="foot">
@@ -760,10 +750,12 @@ function cardHtml(d){
   </div>`;
 }
 
-// Tabela: ordem pela data de abertura (Solicitada em), a mais recente sempre no topo
+// Tabela: prioridade Alta sempre no topo; dentro de cada grupo, data de abertura (Solicitada em) mais recente primeiro
 function sortByAbertura(list){
   const chave=d=>(d.dataSolicitacao||(d.createdAt||'').slice(0,10)||'');
   return list.slice().sort((a,b)=>{
+    const alta=(b.prioridade==='Alta'?1:0)-(a.prioridade==='Alta'?1:0);
+    if(alta!==0)return alta;
     const c=chave(b).localeCompare(chave(a));
     if(c!==0)return c;
     return (b.createdAt||'').localeCompare(a.createdAt||'');
@@ -796,7 +788,7 @@ function renderKanban(){
 function tabelaRowHtml(d){
   // prioridade Alta (em aberto) destaca a linha em vermelho automaticamente
   const alta=d.prioridade==='Alta'&&d.status!=='concluido'&&d.status!=='cancelado';
-  const cls=[d.cor?'tr-cor-'+d.cor:'',alta?'tr-alta':''].filter(Boolean).join(' ');
+  const cls=alta?'tr-alta':'';
   return `
     <tr data-id="${d.id}" class="${cls}">
       <td class="mono">${d.codigo?'#'+d.codigo:'—'}</td>
@@ -822,8 +814,8 @@ function tabelaRowHtml(d){
 }
 const TABELA_HEAD=`<thead><tr><th>#</th><th>Tipo</th><th>Tarefa</th><th>Solicitante</th><th>Solicitada em</th><th>Prioridade</th><th>Status</th><th>Prazo</th><th>Comentários</th><th></th></tr></thead>`;
 
-const secoesAbertas={concluidas:true,canceladas:true};
-function secaoColapsavel(key,icone,titulo,items){
+const secoesAbertas={abertas:true,concluidas:true,canceladas:true};
+function secaoColapsavel(key,icone,titulo,items,bodyClass='concluidas-body'){
   if(!items.length)return '';
   const aberta=secoesAbertas[key];
   return `
@@ -832,7 +824,7 @@ function secaoColapsavel(key,icone,titulo,items){
         <span class="sec-title" style="margin-bottom:0">${icone} ${titulo} (${items.length})</span>
         <span class="concluidas-caret">${aberta?'▾':'▸'}</span>
       </div>
-      <div class="tablewrap concluidas-body" style="display:${aberta?'block':'none'}">
+      <div class="tablewrap ${bodyClass}" style="display:${aberta?'block':'none'}">
         <table>${TABELA_HEAD}<tbody>${items.map(tabelaRowHtml).join('')}</tbody></table>
       </div>
     </div>`;
@@ -850,7 +842,7 @@ function renderTabela(){
   }
 
   const ativasHtml=ativas.length
-    ? `<div class="tablewrap"><table>${TABELA_HEAD}<tbody>${ativas.map(tabelaRowHtml).join('')}</tbody></table></div>`
+    ? secaoColapsavel('abertas','○','Abertas',ativas,'abertas-body')
     : `<div class="empty-state"><h3>Nenhuma demanda em aberto</h3><p>Tudo o que não está concluído ou cancelado aparece aqui.</p></div>`;
 
   const concluidasHtml=secaoColapsavel('concluidas','✓','Concluídas',concluidas);
@@ -1069,8 +1061,6 @@ function openModal(id,presetStatus){
   currentId=id;
   const d=id?demandas.find(x=>x.id===id):null;
   currentComments=d?(d.comentarios||[]).map(c=>({id:c.id||uid(),texto:c.texto,ts:c.ts,done:!!c.done})):[];
-  currentCor=d?(d.cor||''):'';
-  renderCorToggle();
 
   document.getElementById('modalTitle').textContent=d?`Editar demanda #${d.codigo||'—'}`:'Nova demanda';
   document.getElementById('fNome').value=d?d.nome:'';
@@ -1079,6 +1069,7 @@ function openModal(id,presetStatus){
   setProjetoNomeValue(d?(d.projetoNome||''):'');
   toggleProjetoNomeField();
   document.getElementById('fPrioridadeSel').value=d?d.prioridade:'Média';
+  marcaPrioridadeAlta();
   document.getElementById('fStatus').value=d?d.status:(presetStatus||'afazer');
   document.getElementById('fDataSolic').value=d?(d.dataSolicitacao||''):todayStr();
   document.getElementById('fPrazo').value=d?(d.prazo||''):'';
@@ -1393,6 +1384,10 @@ function toggleContratacaoConsultor(){
   document.getElementById('cValorFechado').style.display=fechado?'block':'none';
   updatePrevisaoConsultor();
 }
+function marcaPrioridadeAlta(){
+  const sel=document.getElementById('fPrioridadeSel');
+  sel.classList.toggle('sel-alta',sel.value==='Alta');
+}
 function updatePrevisaoConsultor(){
   const tipo=document.getElementById('cContratacao').value;
   if(tipo==='Fechado'){
@@ -1614,7 +1609,6 @@ function closeModal(){
   document.getElementById('ov').classList.remove('open');
   currentId=null;
   currentComments=[];
-  currentCor='';
 }
 
 function saveDemanda(){
@@ -1634,7 +1628,6 @@ function saveDemanda(){
     prazo:document.getElementById('fPrazo').value,
     observacoes:document.getElementById('fObs').value,
     comentarios:currentComments,
-    cor:currentCor,
     updatedAt:new Date().toISOString(),
   };
   if(currentId){
@@ -1841,10 +1834,7 @@ document.addEventListener('click',e=>{
   }
 });
 document.getElementById('btnAddComment').addEventListener('click',addComment);
-document.getElementById('corToggle').addEventListener('click',()=>{
-  currentCor=currentCor==='red'?'':'red';
-  renderCorToggle();
-});
+document.getElementById('fPrioridadeSel').addEventListener('change',marcaPrioridadeAlta);
 document.getElementById('qChecklistAddBtn').addEventListener('click',addQuickChecklistItem);
 document.getElementById('qChecklistNovoItem').addEventListener('keydown',e=>{
   if(e.key==='Enter'){e.preventDefault();addQuickChecklistItem();}
