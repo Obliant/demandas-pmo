@@ -142,6 +142,11 @@ th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);ve
 th{background:var(--surface2);color:var(--text3);font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
 table.tabela-demandas{table-layout:fixed;width:100%;min-width:0}
 table.tabela-demandas td:last-child:not([colspan]){text-align:right}
+/* coluna do × fica sempre visível na borda direita, mesmo se a tabela passar da largura da tela */
+table.tabela-demandas th:last-child,table.tabela-demandas td:last-child:not([colspan]){position:sticky;right:0;z-index:1}
+table.tabela-demandas td:last-child:not([colspan]){background:var(--surface)}
+table.tabela-demandas th:last-child{background:var(--surface2)}
+table.tabela-demandas tr.tr-alta td:last-child{background:var(--danger-l)}
 table.tabela-demandas th{position:relative}
 table.tabela-demandas td{overflow-wrap:anywhere}
 .col-resizer{position:absolute;top:0;right:-4px;width:9px;height:100%;cursor:col-resize;z-index:2;user-select:none}
