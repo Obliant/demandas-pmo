@@ -389,7 +389,7 @@ textarea{resize:vertical;min-height:70px}
     </div>
 
     <div class="page-content" id="page-horas">
-      <iframe id="horasFrame" class="horas-iframe" src="https://obliant.github.io/apontamento-horas/"></iframe>
+      <iframe id="horasFrame" class="horas-iframe"></iframe>
     </div>
   </main>
 </div>
@@ -2044,6 +2044,7 @@ populateProjetoSelect();
 load();
 renderAll();
 if(location.hash)goDemandasPage(location.hash.slice(1));
+document.getElementById('horasFrame').src='https://obliant.github.io/apontamento-horas/?v='+Date.now(); // v=: sempre a versão mais nova do Apontamento (sem cache preso)
 // Selecionar/copiar texto: arrastar o mouse (ou soltar fora do campo) não conta como clique — não abre card/linha nem fecha janelas
 (function(){
   var down=null;
