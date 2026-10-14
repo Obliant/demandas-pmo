@@ -207,6 +207,10 @@ tbody tr:last-child td{border-bottom:none}
 .alta-top{font-size:12px;color:var(--text2)}
 .alta-top b{color:var(--accent);font-size:13px}
 .alta-nome{font-weight:600;font-size:14px;margin-top:2px}
+.alta-subs{margin-top:5px;display:flex;flex-direction:column;gap:3px}
+.alta-sub{display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer}
+.alta-sub input{width:14px;height:14px;margin-top:2px;flex-shrink:0;cursor:pointer}
+.alta-feito{font-size:12px;color:var(--accent);margin-top:4px}
 .tr-alta{background:var(--danger-l)!important}
 .tr-alta td:first-child{box-shadow:inset 4px 0 0 var(--danger)}
 .tr-alta .task-cell .field-quick-edit{font-weight:600;color:var(--text)}
@@ -776,16 +780,35 @@ function renderAltaBox(){
   const el=document.getElementById('altaBox'); if(!el)return;
   const lista=sortByAbertura(demandas.filter(d=>d.prioridade==='Alta'&&d.status!=='concluido'&&d.status!=='cancelado'));
   if(!lista.length){el.innerHTML='';return;}
-  el.innerHTML='<div class="alta-box"><div class="alta-h">⚑ Prioridade alta <span class="n">'+lista.length+'</span></div>'
-    +lista.map(d=>'<div class="alta-item" data-id="'+d.id+'">'
-      +'<input type="checkbox" class="alta-check" data-id="'+d.id+'" title="Marcar como concluída">'
+  let totalSub=0;
+  const itens=lista.map(d=>{
+    const check=d.checklist||[];
+    const abertas=check.filter(c=>!c.done);
+    totalSub+=abertas.length;
+    let subs='';
+    if(abertas.length){
+      // o que está pendente DE FATO: as subtarefas em aberto, na ordem da lista da demanda
+      subs='<div class="alta-subs">'+abertas.slice(0,8).map(c=>'<label class="alta-sub"><input type="checkbox" class="alta-subcheck" data-id="'+d.id+'" data-item="'+c.id+'" title="Marcar como feita"><span>'+escapeHtml(c.texto)+'</span></label>').join('')
+        +(abertas.length>8?'<div class="alta-feito" style="color:var(--text3)">… e mais '+(abertas.length-8)+' subtarefa'+(abertas.length-8>1?'s':'')+'</div>':'')+'</div>';
+    } else if(check.length){
+      subs='<div class="alta-feito">✓ Todas as subtarefas estão concluídas — marque a demanda como concluída no quadradinho ao lado.</div>';
+    }
+    return '<div class="alta-item" data-id="'+d.id+'">'
+      +'<input type="checkbox" class="alta-check" data-id="'+d.id+'" title="Concluir a demanda inteira">'
       +'<div style="flex:1;min-width:0"><div class="alta-top"><b>'+escapeHtml(tipoLabel(d))+'</b>'+(d.codigo?' · #'+d.codigo:'')+(d.dataSolicitacao?' · desde '+fmtDate(d.dataSolicitacao):'')+'</div>'
-      +'<div class="alta-nome">'+escapeHtml(d.nome)+'</div></div></div>').join('')+'</div>';
-  el.querySelectorAll('.alta-item').forEach(it=>it.addEventListener('click',e=>{ if(e.target.closest('.alta-check'))return; openModal(it.dataset.id); }));
+      +'<div class="alta-nome">'+escapeHtml(d.nome)+'</div>'+subs+'</div></div>';
+  });
+  el.innerHTML='<div class="alta-box"><div class="alta-h">⚑ Prioridade alta <span class="n">'+lista.length+'</span>'
+    +'<span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--text2)">· '+totalSub+' subtarefa'+(totalSub===1?'':'s')+' em aberto</span></div>'+itens.join('')+'</div>';
+  el.querySelectorAll('.alta-item').forEach(it=>it.addEventListener('click',e=>{ if(e.target.closest('.alta-check,.alta-subs,.alta-feito'))return; openModal(it.dataset.id); }));
   el.querySelectorAll('.alta-check').forEach(cb=>cb.addEventListener('change',e=>{
     e.stopPropagation();
     const d=demandas.find(x=>x.id===cb.dataset.id); if(!d)return;
     d.status='concluido'; d.updatedAt=new Date().toISOString(); save(); renderAll();
+  }));
+  el.querySelectorAll('.alta-subcheck').forEach(cb=>cb.addEventListener('change',e=>{
+    e.stopPropagation();
+    toggleChecklistSubItem(cb.dataset.id,cb.dataset.item,true);
   }));
 }
 
