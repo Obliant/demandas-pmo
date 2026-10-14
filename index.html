@@ -389,11 +389,6 @@ textarea{resize:vertical;min-height:70px}
     </div>
 
     <div class="page-content" id="page-horas">
-      <div class="alocacao-resumo" id="alocacaoResumo"></div>
-      <div class="horas-fallback">
-        Se a tela de Horas não aparecer abaixo —
-        <a href="https://obliant.github.io/apontamento-horas/" target="_blank">clique aqui para abrir em outra aba</a>.
-      </div>
       <iframe id="horasFrame" class="horas-iframe" src="https://obliant.github.io/apontamento-horas/"></iframe>
     </div>
   </main>
@@ -1728,7 +1723,8 @@ function lerProjetosHoras(){
   try{return JSON.parse(localStorage.getItem('obl_v5_projetos'))||[]}catch(e){return []}
 }
 function renderAlocacaoResumo(){
-  const el=document.getElementById('alocacaoResumo');
+  const el=document.getElementById("alocacaoResumo");
+  if(!el)return; // faixa removida da aba Horas
   const hoje=todayStr();
 
   const projsHoras=lerProjetosHoras();
