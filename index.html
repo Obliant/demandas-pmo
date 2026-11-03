@@ -204,20 +204,30 @@ textarea{resize:vertical;min-height:70px}
 .pd-card>header{display:flex;align-items:center;gap:8px;padding:9px 16px;background:var(--accent-l);border-bottom:1px solid var(--border)}
 .pd-card>header h3{font-size:14px;font-weight:700;color:var(--accent)}
 .pd-card>header .n{font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:999px;padding:0 8px;line-height:18px}
-.pd-row{display:flex;align-items:flex-start;gap:10px;padding:9px 12px 9px 16px;border-top:1px solid var(--border)}
-.pd-row:first-child{border-top:none}
+.pd-scroll{overflow-x:auto}
+.pd-head,.pd-row{display:grid;grid-template-columns:22px minmax(230px,2.4fr) 170px 128px minmax(200px,2fr) 84px;gap:12px;align-items:start;min-width:900px;padding:9px 12px 9px 16px}
+.pd-head{align-items:center;padding-top:8px;padding-bottom:8px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);background:var(--surface2);border-bottom:1px solid var(--border)}
+.pd-row{border-top:1px solid var(--border)}
+.pd-check{width:17px;height:17px;margin-top:2px;cursor:pointer;accent-color:var(--accent)}
+.pd-text{min-width:0;font-size:14px;line-height:1.4;outline:none;border-radius:4px;overflow-wrap:anywhere;padding:0 2px}
+.pd-proj,.pd-data{font:inherit;font-size:12.5px;width:100%;min-width:0;padding:4px 6px;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--text);cursor:pointer}
+.pd-proj:hover,.pd-data:hover{border-color:var(--border-md);background:var(--surface)}
+.pd-proj:focus,.pd-data:focus{outline:2px solid var(--accent);outline-offset:-1px;background:var(--surface)}
+.pd-cm{display:flex;align-items:flex-start;gap:8px;width:100%;min-width:0;text-align:left;border:none;background:transparent;font:inherit;font-size:12.5px;color:var(--text2);cursor:pointer;padding:3px 6px;border-radius:6px}
+.pd-cm:hover{background:var(--surface2)}
+.pd-cmtxt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pd-cmvazio{color:var(--text3)}
+.pd-nc{font-size:11.5px;color:var(--text2);white-space:nowrap}
+.pd-acoes{display:flex;justify-content:flex-end;gap:2px}
+.pd-acoes button{border:none;background:transparent;color:var(--text3);cursor:pointer;font:inherit;font-size:15px;line-height:1;padding:2px 4px;border-radius:4px;opacity:0}
+.pd-row:hover .pd-acoes button,.pd-acoes button:focus-visible,.pd-acoes button.on{opacity:1}
+.pd-acoes button.on{color:var(--danger)}
+.pd-acoes button:hover{background:var(--surface2);color:var(--text)}
 .pd-row:hover{background:var(--bg)}
 .pd-row.alta{background:var(--danger-l);box-shadow:inset 4px 0 0 var(--danger)}
-.pd-check{width:17px;height:17px;margin-top:2px;flex-shrink:0;cursor:pointer;accent-color:var(--accent)}
-.pd-text{flex:1;min-width:0;font-size:14px;line-height:1.4;outline:none;border-radius:4px;overflow-wrap:anywhere;padding:0 2px}
 .pd-text:focus{background:#fff;box-shadow:0 0 0 2px var(--accent)}
 .pd-row.alta .pd-text{font-weight:600}
 .pd-row.feita .pd-text{text-decoration:line-through;color:var(--text3)}
-.pd-nc{font-size:11.5px;color:var(--text2);white-space:nowrap;margin-top:2px}
-.pd-row button{border:none;background:transparent;color:var(--text3);cursor:pointer;font:inherit;font-size:15px;line-height:1;padding:2px 4px;border-radius:4px;opacity:0}
-.pd-row:hover button,.pd-row button:focus-visible,.pd-row button.on{opacity:1}
-.pd-row button.on{color:var(--danger)}
-.pd-row button:hover{background:var(--surface2);color:var(--text)}
 .pd-row .pd-flag.on:hover{color:var(--danger)}
 .pd-row .pd-del:hover{color:var(--danger)}
 .pd-vazio{padding:22px 16px;font-size:13.5px;color:var(--text3)}
@@ -610,17 +620,32 @@ function novaPendencia(nome,grupo){
   save();
 }
 
+function projetoSelectHtml(d){
+  const atual=grupoDe(d), lista=[GRUPO_INTERNO].concat(getAllProjetos());
+  if(!lista.includes(atual))lista.push(atual);
+  return `<select class="pd-proj" data-id="${d.id}" aria-label="Projeto">`
+    +lista.map(p=>`<option value="${escapeHtml(p)}"${p===atual?' selected':''}>${escapeHtml(p)}</option>`).join('')
+    +'<option value="__outro__">Outro projeto…</option></select>';
+}
+function ultimoComentario(d){
+  return (d.comentarios||[]).slice().sort((a,b)=>(b.ts||'').localeCompare(a.ts||''))[0];
+}
 function rowHtml(d){
-  const feita=isFeita(d), nc=(d.comentarios||[]).length;
+  const feita=isFeita(d), nc=(d.comentarios||[]).length, ult=ultimoComentario(d);
   return `<div class="pd-row${feita?' feita':''}${d.prioridade==='Alta'&&!feita?' alta':''}" data-id="${d.id}">
     <input type="checkbox" class="pd-check" ${feita?'checked':''} title="${feita?'Reabrir':'Marcar como feita'}">
-    <span class="pd-text" data-id="${d.id}" spellcheck="false" title="${escapeHtml(grupoDe(d))}">${escapeHtml(d.nome)}</span>
-    ${nc?`<span class="pd-nc" title="${nc} comentário${nc>1?'s':''}">💬 ${nc}</span>`:''}
-    ${feita?'':`<button class="pd-flag${d.prioridade==='Alta'?' on':''}" title="Prioridade alta">⚑</button>`}
-    <button class="pd-more" title="Detalhes, observações e comentários">⋯</button>
-    <button class="pd-del" title="Excluir">×</button>
+    <span class="pd-text" data-id="${d.id}" spellcheck="false">${escapeHtml(d.nome)}</span>
+    ${projetoSelectHtml(d)}
+    <input type="date" class="pd-data" data-id="${d.id}" value="${escapeHtml(d.dataSolicitacao||'')}" aria-label="Aberta em">
+    <button class="pd-cm" title="${ult?escapeHtml(ult.texto):'Adicionar comentário'}">${ult?`<span class="pd-cmtxt">${escapeHtml(ult.texto)}</span><span class="pd-nc">💬 ${nc}</span>`:'<span class="pd-cmvazio">+ comentar</span>'}</button>
+    <span class="pd-acoes">
+      ${feita?'':`<button class="pd-flag${d.prioridade==='Alta'?' on':''}" title="Prioridade alta">⚑</button>`}
+      <button class="pd-more" title="Abrir detalhes (observações e comentários)">⋯</button>
+      <button class="pd-del" title="Excluir">×</button>
+    </span>
   </div>`;
 }
+const PD_CABECALHO='<div class="pd-head"><span></span><span>Pendência</span><span>Projeto</span><span>Aberta em</span><span>Comentários</span><span></span></div>';
 
 let feitasAberta=false;
 // uma lista só, sem separar por projeto: o projeto aparece ao passar o mouse no texto e dentro dos detalhes (⋯)
@@ -629,10 +654,10 @@ function renderBoard(){
   const feitas=demandas.filter(isFeita).sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
   document.getElementById('pendBoard').innerHTML=`<section class="pd-card">
     <header><h3>Pendências</h3><span class="n">${itens.length}</span></header>
-    ${itens.length?`<div class="pd-list">${itens.map(rowHtml).join('')}</div>`:'<div class="pd-vazio">Nenhuma pendência. Anote a primeira na caixa acima.</div>'}
+    ${itens.length?`<div class="pd-scroll">${PD_CABECALHO}<div class="pd-list">${itens.map(rowHtml).join('')}</div></div>`:'<div class="pd-vazio">Nenhuma pendência. Anote a primeira na caixa acima.</div>'}
   </section>`;
   document.getElementById('pendDone').innerHTML=feitas.length
-    ?`<details class="pd-done"${feitasAberta?' open':''}><summary>✓ Feitas (${feitas.length})</summary><div class="pd-list">${feitas.map(rowHtml).join('')}</div></details>`
+    ?`<details class="pd-done"${feitasAberta?' open':''}><summary>✓ Feitas (${feitas.length})</summary><div class="pd-scroll">${PD_CABECALHO}<div class="pd-list">${feitas.map(rowHtml).join('')}</div></div></details>`
     :'';
   document.querySelectorAll('#pendBoard .pd-text').forEach(el=>{
     try{el.contentEditable='plaintext-only';if(el.contentEditable!=='plaintext-only')el.contentEditable='true'}catch(e){el.contentEditable='true'}
@@ -692,14 +717,31 @@ function adicionaDoTopo(){
 (function(){
   const raiz=document.getElementById('page-demandas');
   raiz.addEventListener('change',e=>{
-    const cb=e.target.closest('.pd-check'); if(!cb)return;
-    const d=achaDemanda(cb.closest('.pd-row').dataset.id); if(!d)return;
-    d.status=cb.checked?'concluido':'afazer'; d.updatedAt=new Date().toISOString(); save(); renderAll();
+    const row=e.target.closest('.pd-row'); if(!row)return;
+    const d=achaDemanda(row.dataset.id); if(!d)return;
+    if(e.target.classList.contains('pd-check')){
+      d.status=e.target.checked?'concluido':'afazer';
+    }else if(e.target.classList.contains('pd-proj')){
+      let g=e.target.value;
+      if(g==='__outro__'){
+        g=(prompt('Nome do projeto:')||'').trim();
+        if(!g){renderAll();return}
+        registrarProjetoCustom(g);
+        preencheOnde();
+      }
+      if(g===GRUPO_INTERNO){d.tipo='Interno';d.projetoNome=''}
+      else{d.tipo='Projeto';d.projetoNome=g}
+    }else if(e.target.classList.contains('pd-data')){
+      d.dataSolicitacao=e.target.value;
+    }else return;
+    d.updatedAt=new Date().toISOString(); save(); renderAll();
   });
   raiz.addEventListener('click',e=>{
     const row=e.target.closest('.pd-row'); if(!row)return;
     const d=achaDemanda(row.dataset.id); if(!d)return;
-    if(e.target.closest('.pd-flag')){
+    if(e.target.closest('.pd-cm')){
+      openModal(d.id,true);
+    }else if(e.target.closest('.pd-flag')){
       d.prioridade=d.prioridade==='Alta'?'Média':'Alta'; d.updatedAt=new Date().toISOString(); save(); renderAll();
     }else if(e.target.closest('.pd-more')){
       openModal(d.id);
@@ -733,7 +775,7 @@ function escapeHtml(str){
   return div.innerHTML;
 }
 
-function openModal(id,presetStatus){
+function openModal(id,focaComentario){
   currentId=id;
   const d=id?demandas.find(x=>x.id===id):null;
   currentComments=d?(d.comentarios||[]).map(c=>({id:c.id||uid(),texto:c.texto,ts:c.ts,done:!!c.done})):[];
@@ -756,7 +798,7 @@ function openModal(id,presetStatus){
   renderComments();
 
   document.getElementById('ov').classList.add('open');
-  document.getElementById('fNome').focus();
+  document.getElementById((focaComentario&&d)?'fNovoComentario':'fNome').focus();
 }
 
 function renderComments(){
