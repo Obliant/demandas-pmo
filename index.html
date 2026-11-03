@@ -213,7 +213,6 @@ textarea{resize:vertical;min-height:70px}
 .pd-text:focus{background:#fff;box-shadow:0 0 0 2px var(--accent)}
 .pd-row.alta .pd-text{font-weight:600}
 .pd-row.feita .pd-text{text-decoration:line-through;color:var(--text3)}
-.pd-tag{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-l);border-radius:999px;padding:1px 8px;white-space:nowrap;margin-top:2px}
 .pd-nc{font-size:11.5px;color:var(--text2);white-space:nowrap;margin-top:2px}
 .pd-row button{border:none;background:transparent;color:var(--text3);cursor:pointer;font:inherit;font-size:15px;line-height:1;padding:2px 4px;border-radius:4px;opacity:0}
 .pd-row:hover button,.pd-row button:focus-visible,.pd-row button.on{opacity:1}
@@ -221,9 +220,7 @@ textarea{resize:vertical;min-height:70px}
 .pd-row button:hover{background:var(--surface2);color:var(--text)}
 .pd-row .pd-flag.on:hover{color:var(--danger)}
 .pd-row .pd-del:hover{color:var(--danger)}
-.pd-add{display:block;width:100%;font:inherit;font-size:13.5px;padding:11px 16px;border:none;border-top:1px dashed var(--border-md);background:transparent;color:var(--text);outline:none}
-.pd-add::placeholder{color:var(--text3)}
-.pd-add:focus{background:var(--bg)}
+.pd-vazio{padding:22px 16px;font-size:13.5px;color:var(--text3)}
 .pd-done{margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
 .pd-done summary{cursor:pointer;padding:12px 16px;font-size:13px;font-weight:600;color:var(--text2)}
 </style>
@@ -613,12 +610,11 @@ function novaPendencia(nome,grupo){
   save();
 }
 
-function rowHtml(d,comTag){
+function rowHtml(d){
   const feita=isFeita(d), nc=(d.comentarios||[]).length;
   return `<div class="pd-row${feita?' feita':''}${d.prioridade==='Alta'&&!feita?' alta':''}" data-id="${d.id}">
     <input type="checkbox" class="pd-check" ${feita?'checked':''} title="${feita?'Reabrir':'Marcar como feita'}">
-    <span class="pd-text" data-id="${d.id}" spellcheck="false">${escapeHtml(d.nome)}</span>
-    ${comTag?`<span class="pd-tag">${escapeHtml(grupoDe(d))}</span>`:''}
+    <span class="pd-text" data-id="${d.id}" spellcheck="false" title="${escapeHtml(grupoDe(d))}">${escapeHtml(d.nome)}</span>
     ${nc?`<span class="pd-nc" title="${nc} comentário${nc>1?'s':''}">💬 ${nc}</span>`:''}
     ${feita?'':`<button class="pd-flag${d.prioridade==='Alta'?' on':''}" title="Prioridade alta">⚑</button>`}
     <button class="pd-more" title="Detalhes, observações e comentários">⋯</button>
@@ -626,33 +622,21 @@ function rowHtml(d,comTag){
   </div>`;
 }
 
-let focoAdd=null, feitasAberta=false;
+let feitasAberta=false;
+// uma lista só, sem separar por projeto: o projeto aparece ao passar o mouse no texto e dentro dos detalhes (⋯)
 function renderBoard(){
-  const abertas=demandas.filter(d=>!isFeita(d));
+  const itens=ordenaPendencias(demandas.filter(d=>!isFeita(d)));
   const feitas=demandas.filter(isFeita).sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
-  const grupos={};
-  abertas.forEach(d=>{const g=grupoDe(d);(grupos[g]=grupos[g]||[]).push(d)});
-  if(!grupos[GRUPO_INTERNO])grupos[GRUPO_INTERNO]=[]; // sempre existe um lugar para começar a anotar
-  const nomes=Object.keys(grupos).sort((a,b)=>a===GRUPO_INTERNO?-1:b===GRUPO_INTERNO?1:a.localeCompare(b,'pt-BR'));
-  document.getElementById('pendBoard').innerHTML=nomes.map(g=>{
-    const itens=ordenaPendencias(grupos[g]);
-    return `<section class="pd-card" data-g="${escapeHtml(g)}">
-      <header><h3>${escapeHtml(g)}</h3><span class="n">${itens.length}</span></header>
-      <div class="pd-list">${itens.map(d=>rowHtml(d,false)).join('')}</div>
-      <input class="pd-add" data-g="${escapeHtml(g)}" placeholder="+ adicionar pendência…" autocomplete="off">
-    </section>`;
-  }).join('');
+  document.getElementById('pendBoard').innerHTML=`<section class="pd-card">
+    <header><h3>Pendências</h3><span class="n">${itens.length}</span></header>
+    ${itens.length?`<div class="pd-list">${itens.map(rowHtml).join('')}</div>`:'<div class="pd-vazio">Nenhuma pendência. Anote a primeira na caixa acima.</div>'}
+  </section>`;
   document.getElementById('pendDone').innerHTML=feitas.length
-    ?`<details class="pd-done"${feitasAberta?' open':''}><summary>✓ Feitas (${feitas.length})</summary><div class="pd-list">${feitas.map(d=>rowHtml(d,true)).join('')}</div></details>`
+    ?`<details class="pd-done"${feitasAberta?' open':''}><summary>✓ Feitas (${feitas.length})</summary><div class="pd-list">${feitas.map(rowHtml).join('')}</div></details>`
     :'';
   document.querySelectorAll('#pendBoard .pd-text').forEach(el=>{
     try{el.contentEditable='plaintext-only';if(el.contentEditable!=='plaintext-only')el.contentEditable='true'}catch(e){el.contentEditable='true'}
   });
-  if(focoAdd!==null){
-    const inp=[...document.querySelectorAll('#pendBoard .pd-add')].find(i=>i.dataset.g===focoAdd);
-    focoAdd=null;
-    if(inp)inp.focus();
-  }
 }
 
 // Bloco no topo: tudo que está em prioridade Alta e ainda aberto
@@ -735,12 +719,6 @@ function adicionaDoTopo(){
     if(t.classList.contains('pd-text')){
       if(e.key==='Enter'){e.preventDefault();t.blur()}
       else if(e.key==='Escape'){const d=achaDemanda(t.dataset.id); if(d)t.textContent=d.nome; t.blur()}
-    }else if(t.classList.contains('pd-add')&&e.key==='Enter'){
-      e.preventDefault();
-      const nome=t.value.trim(); if(!nome)return;
-      novaPendencia(nome,t.dataset.g);
-      focoAdd=t.dataset.g;
-      renderAll();
     }else if(t.id==='qaTexto'&&e.key==='Enter'){
       e.preventDefault(); adicionaDoTopo();
     }
@@ -760,7 +738,7 @@ function openModal(id,presetStatus){
   const d=id?demandas.find(x=>x.id===id):null;
   currentComments=d?(d.comentarios||[]).map(c=>({id:c.id||uid(),texto:c.texto,ts:c.ts,done:!!c.done})):[];
 
-  document.getElementById('modalTitle').textContent=d?`Editar demanda #${d.codigo||'—'}`:'Nova demanda';
+  document.getElementById('modalTitle').textContent=d?`Pendência #${d.codigo||'—'} · ${grupoDe(d)}`:'Nova demanda';
   document.getElementById('fNome').value=d?d.nome:'';
   document.getElementById('fSolicitante').value=d?(d.solicitante||''):'';
   document.getElementById('fTipoSel').value=d?(d.tipo||'Interno'):'Interno';
