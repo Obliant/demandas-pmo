@@ -44,8 +44,6 @@ html.embed .main{margin-left:0}
 .horas-iframe{display:block;width:100%;border:0;flex:1 1 auto;min-height:0}
 .main-inner{max-width:1200px;margin:0 auto}
 .topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:26px}
-.fab-new{position:fixed;bottom:28px;right:36px;z-index:200;padding:14px 24px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.2);font-size:14px}
-.fab-new:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.25)}
 .topbar h2{font-size:20px;font-weight:600}
 .topbar-sub{font-size:13px;color:var(--text2);margin-top:2px}
 .metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px}
@@ -69,90 +67,20 @@ select:focus,input.search:focus{border-color:var(--accent)}
 .btn-danger{background:var(--danger-l);color:var(--danger);border-color:transparent}
 .btn-sm{padding:5px 10px;font-size:12px}
 
-/* KANBAN */
-.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media(max-width:1100px){.kanban{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.kanban{grid-template-columns:1fr}}
-.col{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rl);padding:12px;min-height:140px}
-.col.drop{outline:2px dashed var(--accent);outline-offset:-4px}
-.colhead{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 12px}
-.colhead-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text2)}
-.colhead .swatch{width:8px;height:8px;border-radius:50%}
-.colhead .cnt{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:1px 8px;font-size:11px;color:var(--text2);font-family:'DM Mono',monospace}
-.addcard{width:100%;border:1.5px dashed var(--border-md);background:transparent;color:var(--text2);font:inherit;font-weight:500;font-size:12px;padding:9px;border-radius:var(--r);cursor:pointer;margin-top:4px;transition:all .15s}
-.addcard:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l)}
-.kcard{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 13px;margin-bottom:9px;cursor:grab;transition:.15s}
-.kcard-delete{position:absolute;top:6px;right:6px;width:20px;height:20px;border:none;background:transparent;color:var(--text3);font-size:16px;line-height:1;cursor:pointer;border-radius:6px;opacity:0;transition:all .15s;display:flex;align-items:center;justify-content:center}
-.kcard:hover .kcard-delete{opacity:1}
-.kcard-delete:hover{background:var(--danger-l);color:var(--danger)}
-.kcard:hover{border-color:var(--border-md);transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.kcard.dragging{opacity:.4}
-.kcard .nome{font-size:13.5px;font-weight:600;line-height:1.35;margin-bottom:8px}
-.codigo-tag{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--text3);margin-right:6px}
 .mono{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2)}
-.row-delete{width:22px;height:22px;border:none;background:transparent;color:var(--text3);font-size:16px;line-height:1;cursor:pointer;border-radius:6px}
-.row-delete:hover{background:var(--danger-l);color:var(--danger)}
-.kcard .foot{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:var(--text2)}
 .pill{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
 .pill-alta{background:var(--danger-l);color:var(--danger)}
 .pill-media{background:var(--warn-l);color:var(--warn)}
 .pill-baixa{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
-.pill-atrasada{background:var(--danger);color:#fff}
 .pill-projeto{background:var(--blue-l);color:var(--blue)}
 .pill-interno{background:var(--purple-l);color:var(--purple)}
-.solic-chip{font-size:11px;color:var(--text2)}
-.checklist-quick-edit{cursor:pointer;font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap}
-.checklist-progress-chip{background:var(--accent-l);color:var(--accent);font-weight:600}
-.checklist-progress-chip:hover{filter:brightness(0.95)}
-.checklist-empty-cell{color:var(--text3);border:1px dashed var(--border-md)}
-.checklist-empty-cell:hover{border-color:var(--accent);color:var(--accent)}
-.empty-col{text-align:center;padding:20px 8px;color:var(--text3);font-size:12px}
 
-.task-cell{display:flex;align-items:center;gap:6px}
-.checklist-row-toggle{cursor:pointer;display:inline-flex;align-items:center;gap:5px;flex-shrink:0;color:var(--text3);font-size:26px;line-height:1;padding:3px;border-radius:4px;transition:color .12s,background .12s}
-.checklist-row-toggle:hover{color:var(--accent);background:var(--accent-l)}
-.checklist-caret{display:inline-block;transform:rotate(-90deg);transition:transform .12s}
-.checklist-row-toggle.expanded .checklist-caret{transform:rotate(0deg)}
-.checklist-alert-dot{width:7px;height:7px;border-radius:50%;background:var(--danger);flex-shrink:0;box-shadow:0 0 0 2px var(--danger-l)}
-tr.checklist-subrow{background:var(--surface2)}
-tr.checklist-subrow:hover{background:var(--surface2)}
-tr.checklist-subrow td{padding:0;border-top:none}
-.checklist-subrow-content{display:flex;align-items:center;gap:10px;padding:7px 16px 7px 40px;font-size:12.5px}
-.checklist-subrow-content.done .checklist-subrow-text{text-decoration:line-through;color:var(--text3)}
-.checklist-subrow-text{flex:1;color:var(--text2);cursor:pointer;border-radius:4px;padding:2px 5px;margin:-2px -5px}
-.checklist-subrow-text:hover{background:var(--accent-l);color:var(--accent)}
-.checklist-subrow-date{font-size:10.5px;color:var(--text3);white-space:nowrap}
-.checklist-subrow-del{border:none;background:transparent;color:var(--text3);cursor:pointer;font-size:15px;line-height:1;padding:2px 4px}
-.checklist-subrow-del:hover{color:var(--danger)}
-.checklist-subrow-add{padding-left:40px}
-.checklist-drag{cursor:grab;color:var(--text3);font-size:15px;line-height:1;width:14px;margin-left:-6px;user-select:none;text-align:center;flex-shrink:0}
-.checklist-drag:hover{color:var(--accent)}
-.checklist-drag-ph{width:14px;margin-left:-6px;flex-shrink:0}
-tr.checklist-subrow.dragging{opacity:.4}
-tr.checklist-subrow.drop-before td{box-shadow:inset 0 2px 0 var(--accent)}
-tr.checklist-subrow.drop-after td{box-shadow:inset 0 -2px 0 var(--accent)}
-.checklist-subrow-input,.checklist-subrow-edit-input{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:12.5px;font-family:inherit;background:var(--bg)}
-.checklist-subrow-input:focus,.checklist-subrow-edit-input:focus{outline:none;border-color:var(--accent)}
-.checklist-subrow-addbtn{font-size:11.5px;padding:5px 12px}
 
 /* TABLE */
 .tablewrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rl);background:var(--surface)}
 table{border-collapse:collapse;width:100%;min-width:760px}
 th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:13px}
 th{background:var(--surface2);color:var(--text3);font-weight:600;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
-table.tabela-demandas{table-layout:fixed;width:100%;min-width:0}
-table.tabela-demandas td:last-child:not([colspan]){text-align:right}
-/* coluna do × fica sempre visível na borda direita, mesmo se a tabela passar da largura da tela */
-table.tabela-demandas th:last-child,table.tabela-demandas td:last-child:not([colspan]){position:sticky;right:0;z-index:1}
-table.tabela-demandas td:last-child:not([colspan]){background:var(--surface)}
-table.tabela-demandas th:last-child{background:var(--surface2)}
-table.tabela-demandas tr.tr-alta td:last-child{background:var(--danger-l)}
-table.tabela-demandas th{position:relative}
-table.tabela-demandas td{overflow-wrap:anywhere}
-.col-resizer{position:absolute;top:0;right:-4px;width:9px;height:100%;cursor:col-resize;z-index:2;user-select:none}
-.col-resizer::after{content:'';position:absolute;top:22%;bottom:22%;left:4px;width:2px;border-radius:2px;background:var(--border-md);transition:background .12s}
-.col-resizer:hover::after,.col-resizer.ativo::after{background:var(--accent)}
-body.redimensionando{cursor:col-resize;user-select:none}
 tbody tr{cursor:pointer}
 tbody tr:not(.tr-alta):hover td{background:var(--bg)}
 tbody tr:last-child td{border-bottom:none}
@@ -161,18 +89,6 @@ tbody tr:last-child td{border-bottom:none}
 .stbadge-andamento{background:var(--purple-l);color:var(--purple)}
 .stbadge-concluido{background:var(--accent-l);color:var(--accent)}
 .stbadge-cancelado{background:var(--surface2);color:var(--text3);text-decoration:line-through}
-.stbadge-select{appearance:none;-webkit-appearance:none;-moz-appearance:none;border:none;width:auto;margin:0;cursor:pointer;font-family:inherit}
-.stbadge-select:hover{filter:brightness(0.95)}
-.stbadge-select:focus{outline:2px solid var(--accent);outline-offset:1px;box-shadow:none}
-.tipo-quick-edit{cursor:pointer}
-.tipo-quick-edit:hover{filter:brightness(0.95)}
-.pill-select{appearance:none;-webkit-appearance:none;-moz-appearance:none;border:none;width:auto;margin:0;cursor:pointer;font-family:inherit}
-.pill-select:hover{filter:brightness(0.95)}
-.pill-select:focus{outline:2px solid var(--accent);outline-offset:1px;box-shadow:none}
-.field-quick-edit{cursor:pointer;border-radius:4px;transition:background .12s}
-.field-quick-edit:hover{background:var(--bg)}
-.quick-popover{position:fixed;background:var(--surface);border:1px solid var(--border-md);border-radius:var(--r);box-shadow:0 10px 28px rgba(0,0,0,.18);padding:14px;z-index:700;width:240px}
-.quick-popover select,.quick-popover input{width:100%}
 
 .empty-state{text-align:center;padding:60px 24px;color:var(--text3)}
 .empty-state h3{font-size:15px;color:var(--text2);margin-bottom:6px}
@@ -236,21 +152,6 @@ textarea{resize:vertical;min-height:70px}
 .comment-empty{font-size:12px;color:var(--text3);font-style:italic;margin-bottom:12px}
 .add-comment{display:flex;gap:8px;align-items:flex-start}
 .add-comment textarea{min-height:44px}
-.checklist-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
-.checklist-item{display:flex;align-items:center;gap:9px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:8px 10px}
-.checklist-item input[type=checkbox]{width:16px;height:16px;flex-shrink:0;accent-color:var(--accent);cursor:pointer}
-.checklist-item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.checklist-item-text{font-size:13px;word-break:break-word;cursor:pointer;border-radius:4px}
-.checklist-item-text:hover{background:var(--accent-l);color:var(--accent)}
-.checklist-item-edit-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:4px 7px;font-size:13px;font-family:inherit;background:var(--bg)}
-.checklist-item-edit-input:focus{outline:none;border-color:var(--accent)}
-.checklist-item-date{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace}
-.checklist-item.done .checklist-item-text{color:var(--text3);text-decoration:line-through}
-.checklist-item-del{flex-shrink:0;border:none;background:transparent;color:var(--text3);font-size:15px;cursor:pointer;width:20px;height:20px;border-radius:6px}
-.checklist-item-del:hover{background:var(--danger-l);color:var(--danger)}
-.checklist-progress{font-size:11px;color:var(--text3);margin-bottom:6px}
-.checklist-toggle-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:6px 8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);font-size:12px;color:var(--text2);font-weight:500}
-.checklist-toggle-header:hover{background:var(--surface2)}
 
 /* NOVOS PROJETOS */
 .consultor-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
@@ -292,6 +193,39 @@ textarea{resize:vertical;min-height:70px}
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border-md);border-radius:3px}
+
+/* PENDÊNCIAS — lista simples por projeto */
+.qa{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl)}
+.qa input[type=text]{flex:1 1 280px;min-width:0;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--border-md);border-radius:var(--r);background:var(--bg);color:var(--text)}
+.qa select{font:inherit;font-size:13px;padding:9px 10px;border:1px solid var(--border-md);border-radius:var(--r);background:var(--surface);color:var(--text);max-width:220px}
+.qa input[type=text]:focus,.qa select:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.pd-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;align-items:start}
+.pd-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.pd-card>header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--accent-l);border-bottom:1px solid var(--border)}
+.pd-card>header h3{font-size:14px;font-weight:700;color:var(--accent)}
+.pd-card>header .n{font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:999px;padding:0 8px;line-height:18px}
+.pd-row{display:flex;align-items:flex-start;gap:10px;padding:9px 12px 9px 16px;border-top:1px solid var(--border)}
+.pd-row:first-child{border-top:none}
+.pd-row:hover{background:var(--bg)}
+.pd-row.alta{background:var(--danger-l);box-shadow:inset 4px 0 0 var(--danger)}
+.pd-check{width:17px;height:17px;margin-top:2px;flex-shrink:0;cursor:pointer;accent-color:var(--accent)}
+.pd-text{flex:1;min-width:0;font-size:14px;line-height:1.4;outline:none;border-radius:4px;overflow-wrap:anywhere;padding:0 2px}
+.pd-text:focus{background:#fff;box-shadow:0 0 0 2px var(--accent)}
+.pd-row.alta .pd-text{font-weight:600}
+.pd-row.feita .pd-text{text-decoration:line-through;color:var(--text3)}
+.pd-tag{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-l);border-radius:999px;padding:1px 8px;white-space:nowrap;margin-top:2px}
+.pd-nc{font-size:11.5px;color:var(--text2);white-space:nowrap;margin-top:2px}
+.pd-row button{border:none;background:transparent;color:var(--text3);cursor:pointer;font:inherit;font-size:15px;line-height:1;padding:2px 4px;border-radius:4px;opacity:0}
+.pd-row:hover button,.pd-row button:focus-visible,.pd-row button.on{opacity:1}
+.pd-row button.on{color:var(--danger)}
+.pd-row button:hover{background:var(--surface2);color:var(--text)}
+.pd-row .pd-flag.on:hover{color:var(--danger)}
+.pd-row .pd-del:hover{color:var(--danger)}
+.pd-add{display:block;width:100%;font:inherit;font-size:13.5px;padding:11px 16px;border:none;border-top:1px dashed var(--border-md);background:transparent;color:var(--text);outline:none}
+.pd-add::placeholder{color:var(--text3)}
+.pd-add:focus{background:var(--bg)}
+.pd-done{margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.pd-done summary{cursor:pointer;padding:12px 16px;font-size:13px;font-weight:600;color:var(--text2)}
 </style>
 <script>if(window.self!==window.top||/[?&]embed=1/.test(location.search))document.documentElement.classList.add('embed');</script>
 </head>
@@ -320,15 +254,20 @@ textarea{resize:vertical;min-height:70px}
       <div class="topbar">
         <div>
           <h2>Demandas PMO</h2>
-          <div class="topbar-sub">Obliant Admin · gestão das demandas gerais</div>
+          <div class="topbar-sub">Obliant Admin · pendências por projeto</div>
         </div>
-        <button class="btn btn-primary fab-new" id="btnNew">+ Nova demanda</button>
+      </div>
+
+      <div class="qa">
+        <input type="text" id="qaTexto" placeholder="Anote uma pendência e aperte Enter…" autocomplete="off">
+        <select id="qaOnde" aria-label="Em qual projeto"></select>
+        <button class="btn btn-primary" id="qaAdd">Adicionar</button>
       </div>
 
       <div id="altaBox"></div>
 
-      <div id="viewKanban" style="display:none"></div>
-      <div id="viewTabela"></div>
+      <div class="pd-board" id="pendBoard"></div>
+      <div id="pendDone"></div>
     </div>
     </div>
 
@@ -419,20 +358,6 @@ textarea{resize:vertical;min-height:70px}
           </div>
         </div>
 
-        <div class="form-group">
-          <label>Prazo (opcional)</label>
-          <input type="date" id="fPrazo">
-        </div>
-
-        <div class="form-group status-highlight">
-          <label>Status</label>
-          <select id="fStatus">
-            <option value="afazer">A Fazer</option>
-            <option value="andamento">Em Andamento</option>
-            <option value="concluido">Concluído</option>
-            <option value="cancelado">Cancelado</option>
-          </select>
-        </div>
       </div>
 
       <div class="modal-col">
@@ -536,41 +461,6 @@ textarea{resize:vertical;min-height:70px}
   </div>
 </div>
 
-<!-- MENUZINHO DE EDIÇÃO RÁPIDA: Tipo/Projeto -->
-<div class="quick-popover" id="tipoQuickPopover" style="display:none">
-  <div class="form-group" style="margin-bottom:8px">
-    <label>Tipo</label>
-    <select id="qTipoSel">
-      <option value="Interno">Interno Obliant</option>
-      <option value="Projeto">Projeto</option>
-    </select>
-  </div>
-  <div class="form-group" id="qProjetoGroup" style="display:none;margin-bottom:0">
-    <label>Qual projeto?</label>
-    <select id="qProjetoSel"></select>
-    <input type="text" id="qProjetoOutro" placeholder="Nome do projeto" style="margin-top:8px;display:none">
-  </div>
-</div>
-
-<!-- MENUZINHO DE EDIÇÃO RÁPIDA: campo genérico (nome, solicitante, prioridade, datas) -->
-<div class="quick-popover" id="fieldQuickPopover" style="display:none">
-  <div class="form-group" style="margin-bottom:0">
-    <label id="fieldQuickLabel"></label>
-    <div id="fieldQuickInputWrap"></div>
-  </div>
-</div>
-
-<!-- MENUZINHO DE EDIÇÃO RÁPIDA: Checklist -->
-<div class="quick-popover" id="checklistQuickPopover" style="display:none;width:300px">
-  <div class="form-group" style="margin-bottom:0">
-    <label>Checklist</label>
-    <div class="checklist-list" id="qChecklistList"></div>
-    <div class="add-comment">
-      <input type="text" id="qChecklistNovoItem" placeholder="Adicionar item…">
-      <button class="btn btn-sm" id="qChecklistAddBtn" style="flex-shrink:0">Adicionar</button>
-    </div>
-  </div>
-</div>
 
 <div class="toast" id="toast"></div>
 
@@ -613,32 +503,15 @@ function fmtDateTime(iso){
   const d=new Date(iso);
   return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 }
-function isAtrasada(d){
-  return d.prazo && d.status!=='concluido' && d.status!=='cancelado' && d.prazo < todayStr();
-}
 function toast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2200);
 }
-function priorityPillClass(p){
-  if(p==='Alta')return 'pill-alta';
-  if(p==='Baixa')return 'pill-baixa';
-  return 'pill-media';
-}
-function statusLabel(s){
-  return {afazer:'A Fazer',andamento:'Em Andamento',concluido:'Concluído',cancelado:'Cancelado'}[s]||s;
-}
-function statusBadgeClass(s){
-  return {afazer:'stbadge-afazer',andamento:'stbadge-andamento',concluido:'stbadge-concluido',cancelado:'stbadge-cancelado'}[s]||'';
-}
 function tipoLabel(d){
   if(d.tipo==='Projeto')return d.projetoNome?`Projeto · ${d.projetoNome}`:'Projeto';
   return 'Interno Obliant';
-}
-function tipoPillClass(d){
-  return d.tipo==='Projeto'?'pill-projeto':'pill-interno';
 }
 const PROJETOS_CONHECIDOS=['Seatrium','Teleinfo','Ruff','Protheus Obliant'];
 const PROJETOS_CUSTOM_KEY='admin_demandas_projetos_custom_v1';
@@ -715,440 +588,166 @@ function setProjetoNomeValue(nome){
   toggleProjetoOutro();
 }
 
-function getFiltered(){
-  const q='', tipo=''; // sem busca/filtro de tipo: a tela mostra tudo
-  return demandas.filter(d=>{
-    if(tipo && d.tipo!==tipo)return false;
-    if(q && !(d.nome.toLowerCase().includes(q) || (d.solicitante||'').toLowerCase().includes(q)))return false;
-    return true;
-  });
-}
+// ───────── Pendências: lista simples, um cartão por projeto ─────────
+const GRUPO_INTERNO='Interno Obliant';
+function isFeita(d){return d.status==='concluido'||d.status==='cancelado'}
+function grupoDe(d){return d.tipo==='Projeto'&&d.projetoNome?d.projetoNome:GRUPO_INTERNO}
+function achaDemanda(id){return demandas.find(x=>x.id===id)}
 
 const PRIORIDADE_ORDEM={Alta:0,Média:1,Baixa:2};
-function sortByPriority(list){
+// Alta no topo; depois a ordem em que as pendências foram anotadas (a mais nova fica embaixo, perto do campo de adicionar)
+function ordenaPendencias(list){
   return list.slice().sort((a,b)=>{
     const p=(PRIORIDADE_ORDEM[a.prioridade]??1)-(PRIORIDADE_ORDEM[b.prioridade]??1);
     if(p!==0)return p;
-    return (b.createdAt||'').localeCompare(a.createdAt||'');
+    return (a.createdAt||'').localeCompare(b.createdAt||'');
   });
 }
 
-function renderMetrics(){
-  if(!document.getElementById('mTotal'))return; // números removidos da tela
-  document.getElementById('mTotal').textContent=demandas.length;
-  document.getElementById('mAfazer').textContent=demandas.filter(d=>d.status==='afazer').length;
-  document.getElementById('mAndamento').textContent=demandas.filter(d=>d.status==='andamento').length;
-  document.getElementById('mConcluido').textContent=demandas.filter(d=>d.status==='concluido').length;
-  document.getElementById('mAtrasada').textContent=demandas.filter(isAtrasada).length;
+function novaPendencia(nome,grupo){
+  const projeto=!!grupo&&grupo!==GRUPO_INTERNO;
+  const agora=new Date().toISOString();
+  demandas.push({id:uid(),codigo:nextCodigo(),createdAt:agora,updatedAt:agora,nome,solicitante:'',
+    tipo:projeto?'Projeto':'Interno',projetoNome:projeto?grupo:'',prioridade:'Média',status:'afazer',
+    dataSolicitacao:todayStr(),observacoes:'',comentarios:[]});
+  save();
 }
 
-function cardHtml(d){
-  const atrasada=isAtrasada(d);
-  const altaAberta=d.prioridade==='Alta'&&d.status!=='concluido'&&d.status!=='cancelado';
-  return `<div class="kcard ${altaAberta?'kcard-alta':''}" draggable="true" data-id="${d.id}">
-    <button class="kcard-delete" data-id="${d.id}" title="Excluir demanda">×</button>
-    <div class="nome"><span class="field-quick-edit" data-id="${d.id}" data-field="nome" title="Clique para editar">${d.codigo?`<span class="codigo-tag">#${d.codigo}</span>`:''}${escapeHtml(d.nome)}</span></div>
-    <div class="foot">
-      <span class="pill tipo-quick-edit ${tipoPillClass(d)}" data-id="${d.id}" title="Clique para editar">${tipoLabel(d)}</span>
-      <select class="pill pill-select ${priorityPillClass(d.prioridade)}" data-id="${d.id}" data-field="prioridade">
-        <option value="Alta" ${d.prioridade==='Alta'?'selected':''}>Alta</option>
-        <option value="Média" ${d.prioridade==='Média'?'selected':''}>Média</option>
-        <option value="Baixa" ${d.prioridade==='Baixa'?'selected':''}>Baixa</option>
-      </select>
-      ${atrasada?'<span class="pill pill-atrasada">Atrasada</span>':''}
-      <span class="solic-chip field-quick-edit" data-id="${d.id}" data-field="solicitante" title="Clique para editar">${d.solicitante?escapeHtml(d.solicitante):'+ solicitante'}</span>
-      <span class="solic-chip field-quick-edit" data-id="${d.id}" data-field="prazo" title="Clique para editar">${d.prazo?'· '+fmtDate(d.prazo):'+ prazo'}</span>
-      ${checklistCellHtml(d)}
-    </div>
+function rowHtml(d,comTag){
+  const feita=isFeita(d), nc=(d.comentarios||[]).length;
+  return `<div class="pd-row${feita?' feita':''}${d.prioridade==='Alta'&&!feita?' alta':''}" data-id="${d.id}">
+    <input type="checkbox" class="pd-check" ${feita?'checked':''} title="${feita?'Reabrir':'Marcar como feita'}">
+    <span class="pd-text" data-id="${d.id}" spellcheck="false">${escapeHtml(d.nome)}</span>
+    ${comTag?`<span class="pd-tag">${escapeHtml(grupoDe(d))}</span>`:''}
+    ${nc?`<span class="pd-nc" title="${nc} comentário${nc>1?'s':''}">💬 ${nc}</span>`:''}
+    ${feita?'':`<button class="pd-flag${d.prioridade==='Alta'?' on':''}" title="Prioridade alta">⚑</button>`}
+    <button class="pd-more" title="Detalhes, observações e comentários">⋯</button>
+    <button class="pd-del" title="Excluir">×</button>
   </div>`;
 }
 
-// Tabela: prioridade Alta sempre no topo; dentro de cada grupo, data de abertura (Solicitada em) mais recente primeiro
-function sortByAbertura(list){
-  const chave=d=>(d.dataSolicitacao||(d.createdAt||'').slice(0,10)||'');
-  return list.slice().sort((a,b)=>{
-    const alta=(b.prioridade==='Alta'?1:0)-(a.prioridade==='Alta'?1:0);
-    if(alta!==0)return alta;
-    const c=chave(b).localeCompare(chave(a));
-    if(c!==0)return c;
-    return (b.createdAt||'').localeCompare(a.createdAt||'');
+let focoAdd=null, feitasAberta=false;
+function renderBoard(){
+  const abertas=demandas.filter(d=>!isFeita(d));
+  const feitas=demandas.filter(isFeita).sort((a,b)=>(b.updatedAt||'').localeCompare(a.updatedAt||''));
+  const grupos={};
+  abertas.forEach(d=>{const g=grupoDe(d);(grupos[g]=grupos[g]||[]).push(d)});
+  if(!grupos[GRUPO_INTERNO])grupos[GRUPO_INTERNO]=[]; // sempre existe um lugar para começar a anotar
+  const nomes=Object.keys(grupos).sort((a,b)=>a===GRUPO_INTERNO?-1:b===GRUPO_INTERNO?1:a.localeCompare(b,'pt-BR'));
+  document.getElementById('pendBoard').innerHTML=nomes.map(g=>{
+    const itens=ordenaPendencias(grupos[g]);
+    return `<section class="pd-card" data-g="${escapeHtml(g)}">
+      <header><h3>${escapeHtml(g)}</h3><span class="n">${itens.length}</span></header>
+      <div class="pd-list">${itens.map(d=>rowHtml(d,false)).join('')}</div>
+      <input class="pd-add" data-g="${escapeHtml(g)}" placeholder="+ adicionar pendência…" autocomplete="off">
+    </section>`;
+  }).join('');
+  document.getElementById('pendDone').innerHTML=feitas.length
+    ?`<details class="pd-done"${feitasAberta?' open':''}><summary>✓ Feitas (${feitas.length})</summary><div class="pd-list">${feitas.map(d=>rowHtml(d,true)).join('')}</div></details>`
+    :'';
+  document.querySelectorAll('#pendBoard .pd-text').forEach(el=>{
+    try{el.contentEditable='plaintext-only';if(el.contentEditable!=='plaintext-only')el.contentEditable='true'}catch(e){el.contentEditable='true'}
   });
+  if(focoAdd!==null){
+    const inp=[...document.querySelectorAll('#pendBoard .pd-add')].find(i=>i.dataset.g===focoAdd);
+    focoAdd=null;
+    if(inp)inp.focus();
+  }
 }
 
-// Bloco no topo: tudo que está em prioridade Alta e ainda aberto (tipo/projeto em cima, tarefa embaixo)
+// Bloco no topo: tudo que está em prioridade Alta e ainda aberto
 function renderAltaBox(){
   const el=document.getElementById('altaBox'); if(!el)return;
-  const lista=sortByAbertura(demandas.filter(d=>d.prioridade==='Alta'&&d.status!=='concluido'&&d.status!=='cancelado'));
+  const lista=ordenaPendencias(demandas.filter(d=>d.prioridade==='Alta'&&!isFeita(d)));
   if(!lista.length){el.innerHTML='';return;}
-  let totalSub=0;
-  const itens=lista.map(d=>{
-    const check=d.checklist||[];
-    const abertas=check.filter(c=>!c.done);
-    totalSub+=abertas.length;
-    let subs='';
-    if(abertas.length){
-      // o que está pendente DE FATO: as subtarefas em aberto, na ordem da lista da demanda
-      subs='<div class="alta-subs">'+abertas.slice(0,8).map(c=>'<label class="alta-sub"><input type="checkbox" class="alta-subcheck" data-id="'+d.id+'" data-item="'+c.id+'" title="Marcar como feita"><span>'+escapeHtml(c.texto)+'</span></label>').join('')
-        +(abertas.length>8?'<div class="alta-feito" style="color:var(--text3)">… e mais '+(abertas.length-8)+' subtarefa'+(abertas.length-8>1?'s':'')+'</div>':'')+'</div>';
-    } else if(check.length){
-      subs='<div class="alta-feito">✓ Todas as subtarefas estão concluídas — marque a demanda como concluída no quadradinho ao lado.</div>';
-    }
-    return '<div class="alta-item" data-id="'+d.id+'">'
-      +'<input type="checkbox" class="alta-check" data-id="'+d.id+'" title="Concluir a demanda inteira">'
-      +'<div style="flex:1;min-width:0"><div class="alta-top"><b>'+escapeHtml(tipoLabel(d))+'</b>'+(d.codigo?' · #'+d.codigo:'')+(d.dataSolicitacao?' · desde '+fmtDate(d.dataSolicitacao):'')+'</div>'
-      +'<div class="alta-nome">'+escapeHtml(d.nome)+'</div>'+subs+'</div></div>';
-  });
-  el.innerHTML='<div class="alta-box"><div class="alta-h">⚑ Prioridade alta <span class="n">'+lista.length+'</span>'
-    +'<span style="font-weight:500;text-transform:none;letter-spacing:0;color:var(--text2)">· '+totalSub+' subtarefa'+(totalSub===1?'':'s')+' em aberto</span></div>'+itens.join('')+'</div>';
-  el.querySelectorAll('.alta-item').forEach(it=>it.addEventListener('click',e=>{ if(e.target.closest('.alta-check,.alta-subs,.alta-feito'))return; openModal(it.dataset.id); }));
+  const itens=lista.map(d=>'<div class="alta-item" data-id="'+d.id+'">'
+    +'<input type="checkbox" class="alta-check" data-id="'+d.id+'" title="Marcar como feita">'
+    +'<div style="flex:1;min-width:0"><div class="alta-top"><b>'+escapeHtml(grupoDe(d))+'</b></div>'
+    +'<div class="alta-nome">'+escapeHtml(d.nome)+'</div></div></div>');
+  el.innerHTML='<div class="alta-box"><div class="alta-h">⚑ Prioridade alta <span class="n">'+lista.length+'</span></div>'+itens.join('')+'</div>';
+  el.querySelectorAll('.alta-item').forEach(it=>it.addEventListener('click',e=>{ if(e.target.closest('.alta-check'))return; openModal(it.dataset.id); }));
   el.querySelectorAll('.alta-check').forEach(cb=>cb.addEventListener('change',e=>{
     e.stopPropagation();
-    const d=demandas.find(x=>x.id===cb.dataset.id); if(!d)return;
+    const d=achaDemanda(cb.dataset.id); if(!d)return;
     d.status='concluido'; d.updatedAt=new Date().toISOString(); save(); renderAll();
   }));
-  el.querySelectorAll('.alta-subcheck').forEach(cb=>cb.addEventListener('change',e=>{
-    e.stopPropagation();
-    toggleChecklistSubItem(cb.dataset.id,cb.dataset.item,true);
-  }));
-}
-
-function renderKanban(){
-  const list=getFiltered();
-  const cols=[
-    {key:'afazer',label:'A Fazer',swatch:'#A5A39E'},
-    {key:'andamento',label:'Em Andamento',swatch:'#6D28D9'},
-    {key:'concluido',label:'Concluído',swatch:'#2D6A4F'},
-    {key:'cancelado',label:'Cancelado',swatch:'#8D8A83'},
-  ];
-  const html=cols.map(c=>{
-    const items=sortByPriority(list.filter(d=>d.status===c.key));
-    return `<div class="col" data-status="${c.key}">
-      <div class="colhead">
-        <div class="colhead-title"><span class="swatch" style="background:${c.swatch}"></span>${c.label}</div>
-        <span class="cnt">${items.length}</span>
-      </div>
-      ${items.length?items.map(cardHtml).join(''):'<div class="empty-col">Nenhuma demanda</div>'}
-      <button class="addcard" data-status="${c.key}">+ Adicionar</button>
-    </div>`;
-  }).join('');
-  document.getElementById('viewKanban').innerHTML=`<div class="kanban">${html}</div>`;
-  attachKanbanEvents();
-}
-
-function tabelaRowHtml(d){
-  // prioridade Alta (em aberto) destaca a linha em vermelho automaticamente
-  const alta=d.prioridade==='Alta'&&d.status!=='concluido'&&d.status!=='cancelado';
-  const cls=alta?'tr-alta':'';
-  return `
-    <tr data-id="${d.id}" class="${cls}">
-      <td class="mono">${d.codigo?'#'+d.codigo:'—'}</td>
-      <td><span class="pill tipo-quick-edit ${tipoPillClass(d)}" data-id="${d.id}" title="Clique para abrir os detalhes">${tipoLabel(d)}</span></td>
-      <td class="task-cell">${checklistRowToggleHtml(d)}<span class="field-quick-edit" data-id="${d.id}" data-field="nome" title="Clique para abrir os detalhes">${escapeHtml(d.nome)}</span></td>
-      <td><span class="field-quick-edit" data-id="${d.id}" data-field="dataSolicitacao" title="Clique para abrir os detalhes">${d.dataSolicitacao?fmtDate(d.dataSolicitacao):'—'}</span></td>
-      <td><select class="pill pill-select ${priorityPillClass(d.prioridade)}" data-id="${d.id}" data-field="prioridade">
-        <option value="Alta" ${d.prioridade==='Alta'?'selected':''}>Alta</option>
-        <option value="Média" ${d.prioridade==='Média'?'selected':''}>Média</option>
-        <option value="Baixa" ${d.prioridade==='Baixa'?'selected':''}>Baixa</option>
-      </select></td>
-      <td><select class="stbadge stbadge-select ${statusBadgeClass(d.status)}" data-id="${d.id}">
-        <option value="afazer" ${d.status==='afazer'?'selected':''}>A Fazer</option>
-        <option value="andamento" ${d.status==='andamento'?'selected':''}>Em Andamento</option>
-        <option value="concluido" ${d.status==='concluido'?'selected':''}>Concluído</option>
-        <option value="cancelado" ${d.status==='cancelado'?'selected':''}>Cancelado</option>
-      </select></td>
-      <td><span class="field-quick-edit" data-id="${d.id}" data-field="prazo" title="Clique para abrir os detalhes">${d.prazo?fmtDate(d.prazo):'—'}</span> ${isAtrasada(d)?'<span class="pill pill-atrasada">Atrasada</span>':''}</td>
-      <td>${(d.comentarios||[]).length}</td>
-      <td><button class="row-delete" data-id="${d.id}" title="Excluir demanda">×</button></td>
-    </tr>${checklistExpandedRows.has(d.id)?checklistSubRowsHtml(d):''}`;
-}
-// colunas da tabela: largura inicial (px) e, depois, a que você arrastar (fica salva)
-const COLS_KEY='admin_demandas_colw_v1';
-const COLS=[
-  {k:'cod',l:'#',w:56},{k:'tipo',l:'Tipo',w:170},{k:'tarefa',l:'Tarefa',w:340},
-  {k:'data',l:'Solicitada em',w:110},{k:'prio',l:'Prioridade',w:95},{k:'status',l:'Status',w:130},
-  {k:'prazo',l:'Prazo',w:105},{k:'coment',l:'Comentários',w:105},{k:'del',l:'',w:44,fixa:true}
-];
-function colWidths(){
-  let salvo={};
-  try{salvo=JSON.parse(localStorage.getItem(COLS_KEY))||{}}catch(e){}
-  const w={};
-  COLS.forEach(c=>{w[c.k]=Math.max(40,Math.min(900,parseInt(salvo[c.k],10)||c.w))});
-  return w;
-}
-function tabelaHead(){
-  const w=colWidths();
-  return `<colgroup>${COLS.map(c=>`<col data-col="${c.k}"${c.fixa?'':` style="width:${w[c.k]}px"`}>`).join('')}</colgroup>`
-    +`<thead><tr>${COLS.map(c=>`<th>${c.l}${c.fixa?'':`<span class="col-resizer" data-col="${c.k}" title="Arraste para ajustar a largura"></span>`}</th>`).join('')}</tr></thead>`;
-}
-function larguraTotalTabela(){
-  const w=colWidths();
-  return COLS.reduce((t,c)=>t+w[c.k],0);
-}
-(function(){
-  const view=document.getElementById('viewTabela');
-  let drag=null;
-  view.addEventListener('mousedown',e=>{
-    const h=e.target.closest&&e.target.closest('.col-resizer');
-    if(!h)return;
-    e.preventDefault();e.stopPropagation();
-    const k=h.dataset.col;
-    const col=view.querySelector(`col[data-col="${k}"]`);
-    drag={k,x:e.clientX,w:col?col.getBoundingClientRect().width:colWidths()[k],h};
-    h.classList.add('ativo');
-    document.body.classList.add('redimensionando');
-  });
-  document.addEventListener('mousemove',e=>{
-    if(!drag)return;
-    const nova=Math.max(40,Math.min(900,Math.round(drag.w+(e.clientX-drag.x))));
-    drag.nova=nova;
-    view.querySelectorAll(`col[data-col="${drag.k}"]`).forEach(c=>c.style.width=nova+'px');
-    const tot=larguraTotalTabela()-colWidths()[drag.k]+nova;
-    view.querySelectorAll('table.tabela-demandas').forEach(t=>t.style.minWidth=Math.max(tot,0)+'px');
-  });
-  document.addEventListener('mouseup',()=>{
-    if(!drag)return;
-    drag.h.classList.remove('ativo');
-    document.body.classList.remove('redimensionando');
-    if(drag.nova){
-      let salvo={};
-      try{salvo=JSON.parse(localStorage.getItem(COLS_KEY))||{}}catch(e){}
-      salvo[drag.k]=drag.nova;
-      localStorage.setItem(COLS_KEY,JSON.stringify(salvo));
-      view.querySelectorAll('table.tabela-demandas').forEach(t=>t.style.minWidth=larguraTotalTabela()+'px');
-    }
-    drag=null;
-  });
-  // um clique no resizer não pode abrir a demanda
-  view.addEventListener('click',e=>{ if(e.target.closest&&e.target.closest('.col-resizer'))e.stopPropagation(); },true);
-})();
-
-const secoesAbertas={abertas:true,concluidas:true,canceladas:true};
-function secaoColapsavel(key,icone,titulo,items,bodyClass='concluidas-body'){
-  if(!items.length)return '';
-  const aberta=secoesAbertas[key];
-  return `
-    <div class="concluidas-section">
-      <div class="concluidas-header" data-section="${key}">
-        <span class="sec-title" style="margin-bottom:0">${icone} ${titulo} (${items.length})</span>
-        <span class="concluidas-caret">${aberta?'▾':'▸'}</span>
-      </div>
-      <div class="tablewrap ${bodyClass}" style="display:${aberta?'block':'none'}">
-        <table class="tabela-demandas" style="min-width:${larguraTotalTabela()}px">${tabelaHead()}<tbody>${items.map(tabelaRowHtml).join('')}</tbody></table>
-      </div>
-    </div>`;
-}
-
-function renderTabela(){
-  const list=sortByAbertura(getFiltered());
-  const ativas=list.filter(d=>d.status!=='concluido'&&d.status!=='cancelado');
-  const concluidas=list.filter(d=>d.status==='concluido');
-  const canceladas=list.filter(d=>d.status==='cancelado');
-
-  if(!list.length){
-    document.getElementById('viewTabela').innerHTML=`<div class="empty-state"><h3>Nenhuma demanda encontrada</h3><p>Crie uma nova demanda ou ajuste os filtros.</p></div>`;
-    return;
-  }
-
-  const ativasHtml=ativas.length
-    ? secaoColapsavel('abertas','○','Abertas',ativas,'abertas-body')
-    : `<div class="empty-state"><h3>Nenhuma demanda em aberto</h3><p>Tudo o que não está concluído ou cancelado aparece aqui.</p></div>`;
-
-  const concluidasHtml=secaoColapsavel('concluidas','✓','Concluídas',concluidas);
-  const canceladasHtml=secaoColapsavel('canceladas','✕','Canceladas',canceladas);
-
-  document.getElementById('viewTabela').innerHTML=ativasHtml+concluidasHtml+canceladasHtml;
-
-  document.querySelectorAll('#viewTabela tbody tr:not(.checklist-subrow)').forEach(tr=>{
-    tr.addEventListener('click',()=>openModal(tr.dataset.id));
-  });
-  document.querySelectorAll('#viewTabela .stbadge-select').forEach(sel=>{
-    sel.addEventListener('click',e=>e.stopPropagation());
-    sel.addEventListener('change',e=>{
-      e.stopPropagation();
-      const d=demandas.find(x=>x.id===sel.dataset.id);
-      if(d){
-        d.status=sel.value;
-        d.updatedAt=new Date().toISOString();
-        save();
-        renderAll();
-      }
-    });
-  });
-  document.querySelectorAll('#viewTabela .row-delete').forEach(btn=>{
-    btn.addEventListener('click',e=>{
-      e.stopPropagation();
-      removeDemanda(btn.dataset.id);
-    });
-  });
-  document.querySelectorAll('#viewTabela .checklist-row-toggle').forEach(el=>{
-    el.addEventListener('click',e=>{
-      e.stopPropagation();
-      const id=el.dataset.id;
-      const abrindo=!checklistExpandedRows.has(id);
-      if(abrindo)checklistExpandedRows.add(id);
-      else checklistExpandedRows.delete(id);
-      renderTabela();
-      if(abrindo)focusSubrowInput(id);
-    });
-  });
-  document.querySelectorAll('#viewTabela .checklist-subrow').forEach(tr=>{
-    tr.addEventListener('click',e=>e.stopPropagation());
-  });
-  document.querySelectorAll('#viewTabela .checklist-subrow-check').forEach(cb=>{
-    cb.addEventListener('change',e=>{
-      e.stopPropagation();
-      toggleChecklistSubItem(cb.dataset.id,cb.dataset.item,cb.checked);
-    });
-  });
-  document.querySelectorAll('#viewTabela .checklist-subrow-del').forEach(btn=>{
-    btn.addEventListener('click',e=>{
-      e.stopPropagation();
-      removeChecklistSubItem(btn.dataset.id,btn.dataset.item);
-    });
-  });
-  document.querySelectorAll('#viewTabela .checklist-subrow-text').forEach(el=>{
-    el.addEventListener('click',e=>{
-      e.stopPropagation();
-      checklistSubrowEditingItem=el.dataset.item;
-      renderTabela();
-      const input=document.querySelector(`#viewTabela .checklist-subrow-edit-input[data-item="${el.dataset.item}"]`);
-      if(input){input.focus();input.select();}
-    });
-  });
-  document.querySelectorAll('#viewTabela .checklist-subrow-edit-input').forEach(input=>{
-    input.addEventListener('click',e=>e.stopPropagation());
-    const commit=()=>{
-      if(checklistSubrowEditingItem!==input.dataset.item)return;
-      checklistSubrowEditingItem=null;
-      editChecklistSubItem(input.dataset.id,input.dataset.item,input.value);
-    };
-    input.addEventListener('keydown',e=>{
-      e.stopPropagation();
-      if(e.key==='Enter'){
-        commit();
-      }else if(e.key==='Escape'){
-        checklistSubrowEditingItem=null;
-        renderTabela();
-      }
-    });
-    input.addEventListener('blur',commit);
-  });
-  document.querySelectorAll('#viewTabela .checklist-subrow-addbtn').forEach(btn=>{
-    btn.addEventListener('click',e=>{
-      e.stopPropagation();
-      const input=document.querySelector(`#viewTabela .checklist-subrow-input[data-id="${btn.dataset.id}"]`);
-      if(input){
-        checklistExpandedRows.add(btn.dataset.id);
-        addChecklistSubItem(btn.dataset.id,input.value);
-      }
-    });
-  });
-  document.querySelectorAll('#viewTabela .checklist-subrow-input').forEach(input=>{
-    input.addEventListener('click',e=>e.stopPropagation());
-    input.addEventListener('keydown',e=>{
-      if(e.key==='Enter'){
-        e.stopPropagation();
-        checklistExpandedRows.add(input.dataset.id);
-        addChecklistSubItem(input.dataset.id,input.value);
-      }
-    });
-  });
-  document.querySelectorAll('#viewTabela .pill-select').forEach(sel=>{
-    sel.addEventListener('click',e=>e.stopPropagation());
-    sel.addEventListener('change',e=>{
-      e.stopPropagation();
-      const d=demandas.find(x=>x.id===sel.dataset.id);
-      if(d){
-        d[sel.dataset.field]=sel.value;
-        d.updatedAt=new Date().toISOString();
-        save();
-        renderAll();
-      }
-    });
-  });
-  document.querySelectorAll('#viewTabela .concluidas-header').forEach(header=>{
-    header.addEventListener('click',()=>{
-      const key=header.dataset.section;
-      secoesAbertas[key]=!secoesAbertas[key];
-      renderTabela();
-    });
-  });
 }
 
 function renderAll(){
-  renderMetrics();
-  if(currentView==='kanban'){renderKanban()}else{renderTabela()}
+  renderBoard();
   renderAltaBox();
   renderNovosProjetos();
   renderAlocacaoResumo();
 }
 
-function attachKanbanEvents(){
-  document.querySelectorAll('.kcard').forEach(card=>{
-    card.addEventListener('click',()=>openModal(card.dataset.id));
-    card.addEventListener('dragstart',e=>{
-      card.classList.add('dragging');
-      e.dataTransfer.setData('text/plain',card.dataset.id);
-    });
-    card.addEventListener('dragend',()=>card.classList.remove('dragging'));
-  });
-  document.querySelectorAll('.addcard').forEach(btn=>{
-    btn.addEventListener('click',()=>openModal(null,btn.dataset.status));
-  });
-  document.querySelectorAll('.kcard-delete').forEach(btn=>{
-    btn.addEventListener('click',e=>{
-      e.stopPropagation();
-      removeDemanda(btn.dataset.id);
-    });
-  });
-  document.querySelectorAll('#viewKanban .tipo-quick-edit').forEach(el=>{
-    el.addEventListener('click',e=>{
-      e.stopPropagation();
-      openTipoQuickEdit(el.dataset.id,el);
-    });
-  });
-  document.querySelectorAll('#viewKanban .field-quick-edit').forEach(el=>{
-    el.addEventListener('click',e=>{
-      e.stopPropagation();
-      openFieldQuickEdit(el.dataset.id,el.dataset.field,el);
-    });
-  });
-  document.querySelectorAll('#viewKanban .checklist-quick-edit').forEach(el=>{
-    el.addEventListener('click',e=>{
-      e.stopPropagation();
-      openChecklistQuickEdit(el.dataset.id,el);
-    });
-  });
-  document.querySelectorAll('#viewKanban .pill-select').forEach(sel=>{
-    sel.addEventListener('click',e=>e.stopPropagation());
-    sel.addEventListener('change',e=>{
-      e.stopPropagation();
-      const d=demandas.find(x=>x.id===sel.dataset.id);
-      if(d){
-        d[sel.dataset.field]=sel.value;
-        d.updatedAt=new Date().toISOString();
-        save();
-        renderAll();
-      }
-    });
-  });
-  document.querySelectorAll('.col').forEach(col=>{
-    col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drop')});
-    col.addEventListener('dragleave',()=>col.classList.remove('drop'));
-    col.addEventListener('drop',e=>{
-      e.preventDefault();
-      col.classList.remove('drop');
-      const id=e.dataTransfer.getData('text/plain');
-      const d=demandas.find(x=>x.id===id);
-      if(d){
-        d.status=col.dataset.status;
-        d.updatedAt=new Date().toISOString();
-        save();
-        renderAll();
-      }
-    });
-  });
+function preencheOnde(){
+  const sel=document.getElementById('qaOnde'), atual=sel.value;
+  sel.innerHTML=`<option value="${GRUPO_INTERNO}">${GRUPO_INTERNO}</option>`
+    +getAllProjetos().map(p=>`<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')
+    +'<option value="__outro__">Outro projeto…</option>';
+  if(atual&&[...sel.options].some(o=>o.value===atual))sel.value=atual;
 }
+function adicionaDoTopo(){
+  const inp=document.getElementById('qaTexto'), sel=document.getElementById('qaOnde');
+  const nome=inp.value.trim();
+  if(!nome){inp.focus();return}
+  let g=sel.value;
+  if(g==='__outro__'){
+    g=(prompt('Nome do projeto:')||'').trim();
+    if(!g)return;
+    registrarProjetoCustom(g);
+    preencheOnde();
+  }
+  novaPendencia(nome,g);
+  inp.value='';
+  renderAll();
+  sel.value=g;
+  inp.focus();
+}
+
+(function(){
+  const raiz=document.getElementById('page-demandas');
+  raiz.addEventListener('change',e=>{
+    const cb=e.target.closest('.pd-check'); if(!cb)return;
+    const d=achaDemanda(cb.closest('.pd-row').dataset.id); if(!d)return;
+    d.status=cb.checked?'concluido':'afazer'; d.updatedAt=new Date().toISOString(); save(); renderAll();
+  });
+  raiz.addEventListener('click',e=>{
+    const row=e.target.closest('.pd-row'); if(!row)return;
+    const d=achaDemanda(row.dataset.id); if(!d)return;
+    if(e.target.closest('.pd-flag')){
+      d.prioridade=d.prioridade==='Alta'?'Média':'Alta'; d.updatedAt=new Date().toISOString(); save(); renderAll();
+    }else if(e.target.closest('.pd-more')){
+      openModal(d.id);
+    }else if(e.target.closest('.pd-del')){
+      removeDemanda(d.id);
+    }
+  });
+  raiz.addEventListener('focusout',e=>{
+    const t=e.target.closest&&e.target.closest('.pd-text'); if(!t)return;
+    const d=achaDemanda(t.dataset.id); if(!d)return;
+    const txt=t.textContent.replace(/\s+/g,' ').trim();
+    if(!txt){t.textContent=d.nome;return}
+    if(txt!==d.nome){d.nome=txt; d.updatedAt=new Date().toISOString(); save(); renderAltaBox();}
+  });
+  raiz.addEventListener('keydown',e=>{
+    const t=e.target;
+    if(t.classList.contains('pd-text')){
+      if(e.key==='Enter'){e.preventDefault();t.blur()}
+      else if(e.key==='Escape'){const d=achaDemanda(t.dataset.id); if(d)t.textContent=d.nome; t.blur()}
+    }else if(t.classList.contains('pd-add')&&e.key==='Enter'){
+      e.preventDefault();
+      const nome=t.value.trim(); if(!nome)return;
+      novaPendencia(nome,t.dataset.g);
+      focoAdd=t.dataset.g;
+      renderAll();
+    }else if(t.id==='qaTexto'&&e.key==='Enter'){
+      e.preventDefault(); adicionaDoTopo();
+    }
+  });
+  raiz.addEventListener('toggle',e=>{ if(e.target.classList&&e.target.classList.contains('pd-done'))feitasAberta=e.target.open; },true);
+  document.getElementById('qaAdd').addEventListener('click',adicionaDoTopo);
+})();
 
 function escapeHtml(str){
   const div=document.createElement('div');
@@ -1169,9 +768,7 @@ function openModal(id,presetStatus){
   toggleProjetoNomeField();
   document.getElementById('fPrioridadeSel').value=d?d.prioridade:'Média';
   marcaPrioridadeAlta();
-  document.getElementById('fStatus').value=d?d.status:(presetStatus||'afazer');
   document.getElementById('fDataSolic').value=d?(d.dataSolicitacao||''):todayStr();
-  document.getElementById('fPrazo').value=d?(d.prazo||''):'';
   document.getElementById('fObs').value=d?(d.observacoes||''):'';
   document.getElementById('btnDelete').style.display=d?'inline-flex':'none';
 
@@ -1210,303 +807,6 @@ function toggleCommentDone(id){
   c.done=!c.done;
   renderComments();
 }
-
-function checklistCellHtml(d){
-  const list=d.checklist||[];
-  if(!list.length)return `<span class="checklist-quick-edit checklist-empty-cell" data-id="${d.id}" title="Clique para adicionar itens">+ checklist</span>`;
-  const done=list.filter(c=>c.done).length;
-  return `<span class="checklist-quick-edit checklist-progress-chip" data-id="${d.id}" title="Clique para ver/editar">☑ ${done}/${list.length}</span>`;
-}
-
-/* ── CHECKLIST NA TABELA: subtarefas como linhas abaixo (estilo Monday) ── */
-const checklistExpandedRows=new Set();
-function checklistRowToggleHtml(d){
-  const list=d.checklist||[];
-  const expanded=checklistExpandedRows.has(d.id);
-  const abertos=list.filter(c=>!c.done).length;
-  const semChecklistEAFazer=!list.length&&d.status==='afazer';
-  const mostrarFarol=abertos>0||semChecklistEAFazer;
-  const tituloFarol=abertos>0?`${abertos} subtarefa${abertos>1?'s':''} em aberto`:'A Fazer, sem subtarefas ainda';
-  const dot=mostrarFarol?`<span class="checklist-alert-dot" title="${tituloFarol}"></span>`:'';
-  return `<span class="checklist-row-toggle ${expanded?'expanded':''}" data-id="${d.id}" title="Ver/adicionar subtarefas"><span class="checklist-caret">▾</span>${dot}</span>`;
-}
-let checklistSubrowEditingItem=null;
-function checklistItemRowHtml(d,c){
-  const editing=checklistSubrowEditingItem===c.id;
-  const textHtml=editing
-    ? `<input type="text" class="checklist-subrow-edit-input" data-id="${d.id}" data-item="${c.id}" value="${escapeHtml(c.texto)}">`
-    : `<span class="checklist-subrow-text" data-id="${d.id}" data-item="${c.id}" title="Clique para editar">${escapeHtml(c.texto)}</span>`;
-  return `<tr class="checklist-subrow" data-parent="${d.id}" data-item="${c.id}" data-open="${c.done?'0':'1'}">
-    <td colspan="9">
-      <div class="checklist-subrow-content ${c.done?'done':''}">
-        ${c.done?'<span class="checklist-drag-ph"></span>':'<span class="checklist-drag" title="Arraste para mudar a ordem">⋮⋮</span>'}
-        <input type="checkbox" class="checklist-subrow-check" data-id="${d.id}" data-item="${c.id}" ${c.done?'checked':''}>
-        ${textHtml}
-        ${c.ts?`<span class="checklist-subrow-date">${fmtDate(c.ts.slice(0,10))}</span>`:''}
-        <button class="checklist-subrow-del" data-id="${d.id}" data-item="${c.id}" title="Remover subtarefa">×</button>
-      </div>
-    </td>
-  </tr>`;
-}
-function checklistSubRowsHtml(d){
-  const items=d.checklist||[];
-  // em aberto no topo (mais novas primeiro); as feitas descem pro fim
-  const ordenados=items.filter(c=>!c.done).concat(items.filter(c=>c.done));
-  const itemRows=ordenados.map(c=>checklistItemRowHtml(d,c)).join('');
-  const addRow=`<tr class="checklist-subrow checklist-addrow" data-parent="${d.id}">
-    <td colspan="9">
-      <div class="checklist-subrow-content checklist-subrow-add">
-        <input type="text" class="checklist-subrow-input" data-id="${d.id}" placeholder="Adicionar subtarefa…">
-        <button class="btn btn-sm checklist-subrow-addbtn" data-id="${d.id}">+ Adicionar</button>
-      </div>
-    </td>
-  </tr>`;
-  return itemRows+addRow;
-}
-// arrastar subtarefa: solta antes/depois de outra subtarefa em aberto da mesma demanda
-function moveChecklistItem(demandaId,itemId,targetId,after){
-  const d=demandas.find(x=>x.id===demandaId);
-  if(!d||!d.checklist||itemId===targetId)return;
-  const item=d.checklist.find(x=>x.id===itemId);
-  if(!item)return;
-  d.checklist=d.checklist.filter(x=>x.id!==itemId);
-  const i=d.checklist.findIndex(x=>x.id===targetId);
-  if(i<0)return;
-  d.checklist.splice(i+(after?1:0),0,item);
-  d.updatedAt=new Date().toISOString();
-  save();
-  renderAll();
-}
-(function(){
-  const view=document.getElementById('viewTabela');
-  let drag=null;
-  const limpa=()=>view.querySelectorAll('.drop-before,.drop-after,.dragging').forEach(el=>el.classList.remove('drop-before','drop-after','dragging'));
-  const alvo=e=>e.target.closest&&e.target.closest('tr.checklist-subrow[data-open="1"]');
-  view.addEventListener('mousedown',e=>{
-    const h=e.target.closest&&e.target.closest('.checklist-drag');
-    if(h)h.closest('tr').draggable=true;
-  });
-  view.addEventListener('dragstart',e=>{
-    const tr=e.target.closest&&e.target.closest('tr.checklist-subrow[data-open="1"]');
-    if(!tr||!tr.draggable)return;
-    drag={demanda:tr.dataset.parent,item:tr.dataset.item};
-    e.dataTransfer.effectAllowed='move';
-    e.dataTransfer.setData('text/plain',drag.item);
-    tr.classList.add('dragging');
-  });
-  view.addEventListener('dragover',e=>{
-    const tr=alvo(e);
-    if(!drag||!tr||tr.dataset.parent!==drag.demanda||tr.dataset.item===drag.item)return;
-    e.preventDefault();
-    view.querySelectorAll('.drop-before,.drop-after').forEach(el=>el.classList.remove('drop-before','drop-after'));
-    const r=tr.getBoundingClientRect();
-    tr.classList.add(e.clientY>r.top+r.height/2?'drop-after':'drop-before');
-  });
-  view.addEventListener('drop',e=>{
-    const tr=alvo(e);
-    if(!drag||!tr||tr.dataset.parent!==drag.demanda)return;
-    e.preventDefault();
-    const r=tr.getBoundingClientRect();
-    const d=drag; drag=null; limpa();
-    moveChecklistItem(d.demanda,d.item,tr.dataset.item,e.clientY>r.top+r.height/2);
-  });
-  document.addEventListener('dragend',()=>{
-    drag=null; limpa();
-    view.querySelectorAll('tr.checklist-subrow[draggable="true"]').forEach(tr=>tr.draggable=false);
-  });
-  document.addEventListener('mouseup',()=>{
-    view.querySelectorAll('tr.checklist-subrow[draggable="true"]').forEach(tr=>tr.draggable=false);
-  });
-})();
-function toggleChecklistSubItem(demandaId,itemId,done){
-  const d=demandas.find(x=>x.id===demandaId);
-  const item=d&&(d.checklist||[]).find(x=>x.id===itemId);
-  if(!item)return;
-  item.done=done;
-  d.updatedAt=new Date().toISOString();
-  save();
-  renderAll();
-}
-function removeChecklistSubItem(demandaId,itemId){
-  const d=demandas.find(x=>x.id===demandaId);
-  if(!d)return;
-  d.checklist=(d.checklist||[]).filter(x=>x.id!==itemId);
-  d.updatedAt=new Date().toISOString();
-  save();
-  renderAll();
-}
-function editChecklistSubItem(demandaId,itemId,novoTexto){
-  const d=demandas.find(x=>x.id===demandaId);
-  const item=d&&(d.checklist||[]).find(x=>x.id===itemId);
-  if(!item)return;
-  const txt=novoTexto.trim();
-  if(txt)item.texto=txt;
-  d.updatedAt=new Date().toISOString();
-  save();
-  renderAll();
-}
-function addChecklistSubItem(demandaId,texto){
-  const d=demandas.find(x=>x.id===demandaId);
-  if(!d||!texto.trim())return;
-  if(!d.checklist)d.checklist=[];
-  d.checklist.unshift({id:uid(),texto:texto.trim(),done:false,ts:new Date().toISOString()});
-  d.updatedAt=new Date().toISOString();
-  save();
-  renderAll();
-  focusSubrowInput(demandaId); // cursor volta pra caixinha, pronto pra próxima subtarefa
-}
-function focusSubrowInput(demandaId){
-  const input=document.querySelector(`#viewTabela .checklist-subrow-input[data-id="${demandaId}"]`);
-  if(input)input.focus();
-}
-
-let quickChecklistId=null;
-let checklistItensExpandidos=false;
-function openChecklistQuickEdit(id,anchorEl){
-  const d=demandas.find(x=>x.id===id);
-  if(!d)return;
-  closeTipoQuickEdit();
-  closeFieldQuickEdit();
-  quickChecklistId=id;
-  checklistItensExpandidos=false;
-  quickChecklistEditingItem=null;
-  if(!d.checklist)d.checklist=[];
-  document.getElementById('qChecklistNovoItem').value='';
-  renderQuickChecklist();
-  positionPopover(document.getElementById('checklistQuickPopover'),anchorEl);
-  document.getElementById('qChecklistNovoItem').focus();
-}
-function closeChecklistQuickEdit(){
-  document.getElementById('checklistQuickPopover').style.display='none';
-  quickChecklistId=null;
-}
-let quickChecklistEditingItem=null;
-function quickChecklistItemHtml(c){
-  const editing=quickChecklistEditingItem===c.id;
-  const textHtml=editing
-    ? `<input type="text" class="checklist-item-edit-input" data-id="${c.id}" value="${escapeHtml(c.texto)}">`
-    : `<span class="checklist-item-text" data-id="${c.id}" title="Clique para editar">${escapeHtml(c.texto)}</span>`;
-  return `
-    <div class="checklist-item ${c.done?'done':''}">
-      <input type="checkbox" data-id="${c.id}" ${c.done?'checked':''}>
-      <div class="checklist-item-body">
-        ${textHtml}
-        ${c.ts?`<span class="checklist-item-date">${fmtDate(c.ts.slice(0,10))}</span>`:''}
-      </div>
-      <button class="checklist-item-del" data-id="${c.id}" title="Remover item">×</button>
-    </div>`;
-}
-function renderQuickChecklist(){
-  const d=demandas.find(x=>x.id===quickChecklistId);
-  const el=document.getElementById('qChecklistList');
-  if(!d)return;
-  const items=d.checklist||[];
-  if(!items.length){
-    el.innerHTML='<div class="comment-empty">Nenhum item ainda.</div>';
-    return;
-  }
-  const abertos=items.filter(c=>!c.done);
-  const concluidos=items.filter(c=>c.done);
-  const abertosHtml=abertos.length
-    ? abertos.map(quickChecklistItemHtml).join('')
-    : '<div class="comment-empty">Nenhum item em aberto.</div>';
-  let concluidosHtml='';
-  if(concluidos.length){
-    concluidosHtml=`<div class="checklist-toggle-header" id="qChecklistToggleHeader">
-      <span>✓ ${concluidos.length} concluído${concluidos.length>1?'s':''}</span>
-      <span class="concluidas-caret">${checklistItensExpandidos?'▾':'▸'}</span>
-    </div>`;
-    if(checklistItensExpandidos){
-      concluidosHtml+=concluidos.map(quickChecklistItemHtml).join('');
-    }
-  }
-  el.innerHTML=abertosHtml+concluidosHtml;
-  const toggleHeader=document.getElementById('qChecklistToggleHeader');
-  if(toggleHeader){
-    toggleHeader.addEventListener('click',e=>{
-      e.stopPropagation();
-      checklistItensExpandidos=!checklistItensExpandidos;
-      renderQuickChecklist();
-    });
-  }
-  el.querySelectorAll('input[type=checkbox]').forEach(cb=>{
-    cb.addEventListener('change',()=>{
-      const item=d.checklist.find(x=>x.id===cb.dataset.id);
-      if(!item)return;
-      item.done=cb.checked;
-      d.updatedAt=new Date().toISOString();
-      save();
-      renderQuickChecklist();
-      renderAll();
-    });
-  });
-  el.querySelectorAll('.checklist-item-del').forEach(btn=>{
-    btn.addEventListener('click',e=>{
-      e.stopPropagation();
-      d.checklist=d.checklist.filter(x=>x.id!==btn.dataset.id);
-      d.updatedAt=new Date().toISOString();
-      save();
-      renderQuickChecklist();
-      renderAll();
-    });
-  });
-  el.querySelectorAll('.checklist-item-text').forEach(span=>{
-    span.addEventListener('click',e=>{
-      e.stopPropagation();
-      quickChecklistEditingItem=span.dataset.id;
-      renderQuickChecklist();
-      const input=el.querySelector(`.checklist-item-edit-input[data-id="${span.dataset.id}"]`);
-      if(input){input.focus();input.select();}
-    });
-  });
-  el.querySelectorAll('.checklist-item-edit-input').forEach(input=>{
-    input.addEventListener('click',e=>e.stopPropagation());
-    const commit=()=>{
-      if(quickChecklistEditingItem!==input.dataset.id)return;
-      quickChecklistEditingItem=null;
-      const item=d.checklist.find(x=>x.id===input.dataset.id);
-      const txt=input.value.trim();
-      if(item&&txt){
-        item.texto=txt;
-        d.updatedAt=new Date().toISOString();
-        save();
-      }
-      renderQuickChecklist();
-      renderAll();
-    };
-    input.addEventListener('keydown',e=>{
-      e.stopPropagation();
-      if(e.key==='Enter'){
-        commit();
-      }else if(e.key==='Escape'){
-        quickChecklistEditingItem=null;
-        renderQuickChecklist();
-      }
-    });
-    input.addEventListener('blur',commit);
-  });
-}
-function addQuickChecklistItem(){
-  const d=demandas.find(x=>x.id===quickChecklistId);
-  const input=document.getElementById('qChecklistNovoItem');
-  const txt=input.value.trim();
-  if(!d||!txt)return;
-  if(!d.checklist)d.checklist=[];
-  d.checklist.unshift({id:uid(),texto:txt,done:false,ts:new Date().toISOString()});
-  d.updatedAt=new Date().toISOString();
-  save();
-  input.value='';
-  checklistItensExpandidos=true;
-  renderQuickChecklist();
-  renderAll();
-  input.focus();
-}
-
-/* ── NOVOS PROJETOS (pipeline / prospecção) ───────────────────────────── */
-const PROJETOS_POTENCIAIS_KEY='admin_novos_projetos_v1';
-let novosProjetos=[];
-let currentProjetoId=null;
-let currentConsultores=[];
 
 function loadNovosProjetos(){
   try{novosProjetos=JSON.parse(localStorage.getItem(PROJETOS_POTENCIAIS_KEY))||[]}catch(e){novosProjetos=[]}
@@ -1786,9 +1086,7 @@ function saveDemanda(){
     tipo:document.getElementById('fTipoSel').value,
     projetoNome:document.getElementById('fTipoSel').value==='Projeto'?getProjetoNomeValue():'',
     prioridade:document.getElementById('fPrioridadeSel').value,
-    status:document.getElementById('fStatus').value,
     dataSolicitacao:document.getElementById('fDataSolic').value,
-    prazo:document.getElementById('fPrazo').value,
     observacoes:document.getElementById('fObs').value,
     comentarios:currentComments,
     updatedAt:new Date().toISOString(),
@@ -1798,7 +1096,7 @@ function saveDemanda(){
     demandas[idx]={...demandas[idx],...payload};
     toast('Demanda atualizada');
   }else{
-    demandas.push({id:uid(),codigo:nextCodigo(),createdAt:new Date().toISOString(),...payload});
+    demandas.push({id:uid(),codigo:nextCodigo(),createdAt:new Date().toISOString(),status:'afazer',...payload});
     toast('Demanda criada');
   }
   save();
@@ -1806,104 +1104,6 @@ function saveDemanda(){
   renderAll();
 }
 
-let quickEditId=null;
-function populateQuickProjetoSelect(){
-  document.getElementById('qProjetoSel').innerHTML=getAllProjetos().map(p=>`<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`).join('')
-    +'<option value="__outro__">Outro (especificar)</option>';
-}
-function setQuickProjetoValue(nome){
-  const sel=document.getElementById('qProjetoSel');
-  const outro=document.getElementById('qProjetoOutro');
-  if(nome && getAllProjetos().includes(nome)){
-    sel.value=nome;outro.value='';outro.style.display='none';
-  }else if(nome){
-    sel.value='__outro__';outro.value=nome;outro.style.display='block';
-  }else{
-    sel.value=getAllProjetos()[0]||'__outro__';outro.value='';outro.style.display='none';
-  }
-}
-function positionPopover(pop,anchorEl){
-  pop.style.display='block';
-  const rect=anchorEl.getBoundingClientRect();
-  const popW=pop.offsetWidth||240;
-  let left=Math.min(rect.left,window.innerWidth-popW-12);
-  left=Math.max(left,12);
-  let top=rect.bottom+6;
-  if(top+220>window.innerHeight)top=Math.max(rect.top-226,12);
-  pop.style.left=left+'px';
-  pop.style.top=top+'px';
-}
-function openTipoQuickEdit(id,anchorEl){
-  const d=demandas.find(x=>x.id===id);
-  if(!d)return;
-  closeFieldQuickEdit();
-  closeChecklistQuickEdit();
-  quickEditId=id;
-  document.getElementById('qTipoSel').value=d.tipo||'Interno';
-  populateQuickProjetoSelect();
-  setQuickProjetoValue(d.projetoNome||'');
-  document.getElementById('qProjetoGroup').style.display=(d.tipo==='Projeto')?'block':'none';
-  positionPopover(document.getElementById('tipoQuickPopover'),anchorEl);
-}
-
-const QUICK_FIELD_CONFIG={
-  nome:{label:'Nome da tarefa',type:'text'},
-  solicitante:{label:'Quem solicitou',type:'text'},
-  dataSolicitacao:{label:'Data da solicitação',type:'date'},
-  prazo:{label:'Prazo',type:'date'},
-};
-let quickFieldId=null,quickFieldName=null;
-function openFieldQuickEdit(id,field,anchorEl){
-  const cfg=QUICK_FIELD_CONFIG[field];
-  const d=demandas.find(x=>x.id===id);
-  if(!cfg||!d)return;
-  closeTipoQuickEdit();
-  closeChecklistQuickEdit();
-  quickFieldId=id;
-  quickFieldName=field;
-  document.getElementById('fieldQuickLabel').textContent=cfg.label;
-  const wrap=document.getElementById('fieldQuickInputWrap');
-  const val=d[field]||'';
-  wrap.innerHTML=`<input type="${cfg.type}" id="fieldQuickInput" value="${escapeHtml(val)}">`;
-  const pop=document.getElementById('fieldQuickPopover');
-  positionPopover(pop,anchorEl);
-  const input=document.getElementById('fieldQuickInput');
-  input.focus();
-  if(cfg.type==='text')input.select();
-  const commit=()=>{
-    const newVal=input.value;
-    if(field==='nome'&&!newVal.trim())return;
-    d[field]=newVal;
-    d.updatedAt=new Date().toISOString();
-    save();
-    closeFieldQuickEdit();
-    renderAll();
-  };
-  input.onblur=commit;
-  input.onchange=commit;
-  input.onkeydown=e=>{
-    if(e.key==='Enter'){e.preventDefault();input.blur();}
-    if(e.key==='Escape'){input.onblur=null;closeFieldQuickEdit();}
-  };
-}
-function closeFieldQuickEdit(){
-  document.getElementById('fieldQuickPopover').style.display='none';
-  quickFieldId=null;quickFieldName=null;
-}
-function closeTipoQuickEdit(){
-  document.getElementById('tipoQuickPopover').style.display='none';
-  quickEditId=null;
-}
-function saveQuickTipoProjeto(tipo,projetoNome){
-  const d=demandas.find(x=>x.id===quickEditId);
-  if(!d)return;
-  d.tipo=tipo;
-  d.projetoNome=tipo==='Projeto'?(projetoNome||''):'';
-  d.updatedAt=new Date().toISOString();
-  save();
-  closeTipoQuickEdit();
-  renderAll();
-}
 
 function removeDemanda(id){
   const d=demandas.find(x=>x.id===id);
@@ -1935,89 +1135,17 @@ function addComment(){
   renderComments();
 }
 
-document.getElementById('btnNew').addEventListener('click',()=>openModal(null));
 document.getElementById('btnCancel').addEventListener('click',closeModal);
 document.getElementById('btnSave').addEventListener('click',saveDemanda);
 document.getElementById('btnDelete').addEventListener('click',deleteDemanda);
-document.getElementById('qTipoSel').addEventListener('change',()=>{
-  const tipo=document.getElementById('qTipoSel').value;
-  if(tipo==='Interno'){
-    saveQuickTipoProjeto('Interno','');
-  }else{
-    document.getElementById('qProjetoGroup').style.display='block';
-    populateQuickProjetoSelect();
-    setQuickProjetoValue('');
-  }
-});
-document.getElementById('qProjetoSel').addEventListener('change',()=>{
-  const val=document.getElementById('qProjetoSel').value;
-  if(val==='__outro__'){
-    document.getElementById('qProjetoOutro').style.display='block';
-    document.getElementById('qProjetoOutro').focus();
-  }else{
-    saveQuickTipoProjeto('Projeto',val);
-  }
-});
-document.getElementById('qProjetoOutro').addEventListener('keydown',e=>{
-  if(e.key==='Enter'){
-    e.preventDefault();
-    const nome=document.getElementById('qProjetoOutro').value.trim();
-    if(nome){registrarProjetoCustom(nome);saveQuickTipoProjeto('Projeto',nome);}
-  }
-});
-document.getElementById('qProjetoOutro').addEventListener('blur',()=>{
-  const nome=document.getElementById('qProjetoOutro').value.trim();
-  if(nome){registrarProjetoCustom(nome);saveQuickTipoProjeto('Projeto',nome);}
-});
-document.addEventListener('click',e=>{
-  const pop1=document.getElementById('tipoQuickPopover');
-  if(pop1.style.display!=='none' && !pop1.contains(e.target) && !e.target.classList.contains('tipo-quick-edit')){
-    closeTipoQuickEdit();
-  }
-  const pop2=document.getElementById('fieldQuickPopover');
-  if(pop2.style.display!=='none' && !pop2.contains(e.target) && !e.target.classList.contains('field-quick-edit')){
-    closeFieldQuickEdit();
-  }
-  const pop3=document.getElementById('checklistQuickPopover');
-  if(pop3.style.display!=='none' && !pop3.contains(e.target) && !e.target.classList.contains('checklist-quick-edit')){
-    closeChecklistQuickEdit();
-  }
-  if(checklistExpandedRows.size){
-    let mudou=false;
-    checklistExpandedRows.forEach(id=>{
-      const parentRow=document.querySelector(`#viewTabela tr[data-id="${id}"]`);
-      const dentroDaLinha=parentRow&&parentRow.contains(e.target);
-      const dentroDaSubtarefa=e.target.closest(`.checklist-subrow[data-parent="${id}"]`);
-      if(!dentroDaLinha&&!dentroDaSubtarefa){
-        checklistExpandedRows.delete(id);
-        mudou=true;
-      }
-    });
-    if(mudou)renderTabela();
-  }
-});
 document.getElementById('btnAddComment').addEventListener('click',addComment);
 document.getElementById('fPrioridadeSel').addEventListener('change',marcaPrioridadeAlta);
-document.getElementById('qChecklistAddBtn').addEventListener('click',addQuickChecklistItem);
-document.getElementById('qChecklistNovoItem').addEventListener('keydown',e=>{
-  if(e.key==='Enter'){e.preventDefault();addQuickChecklistItem();}
-});
 document.getElementById('ov').addEventListener('click',e=>{
   if(e.target.id==='ov' && confirm('Fechar sem salvar? As informações preenchidas serão perdidas.'))closeModal();
 });
 document.getElementById('fTipoSel').addEventListener('change',toggleProjetoNomeField);
 document.getElementById('fProjetoSel').addEventListener('change',toggleProjetoOutro);
 document.getElementById('btnRemoverProjeto').addEventListener('click',removerProjetoCustom);
-document.querySelectorAll('.tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
-    currentView=tab.dataset.view;
-    document.getElementById('viewKanban').style.display=currentView==='kanban'?'block':'none';
-    document.getElementById('viewTabela').style.display=currentView==='tabela'?'block':'none';
-    renderAll();
-  });
-});
 
 function goDemandasPage(k){var el=document.querySelector('.nav-item[data-page="'+k+'"]');if(el)el.click();}
 window.addEventListener('message',function(e){if(e.origin===location.origin&&e.data&&e.data.centralGo)goDemandasPage(e.data.centralGo);});
@@ -2054,6 +1182,7 @@ document.getElementById('cTaxa').addEventListener('keydown',e=>{if(e.key==='Ente
 document.getElementById('cNome').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addConsultor();}});
 
 populateProjetoSelect();
+preencheOnde();
 load();
 renderAll();
 if(location.hash)goDemandasPage(location.hash.slice(1));
