@@ -705,8 +705,8 @@ function rowHtml(d){
   return `<div class="pd-row${feita?' feita':''}${d.prioridade==='Alta'&&!feita?' alta':''}" data-id="${d.id}">
     <input type="checkbox" class="pd-check" ${feita?'checked':''} title="${feita?'Reabrir':'Marcar como feita'}">
     ${projetoSelectHtml(d)}
-    <span class="pd-text" data-id="${d.id}" data-campo="nome" spellcheck="false">${escapeHtml(d.nome)}</span>
     <span class="pd-text pd-pend" data-id="${d.id}" data-campo="pendencia" spellcheck="false">${escapeHtml(d.pendencia||'')}</span>
+    <span class="pd-text" data-id="${d.id}" data-campo="nome" spellcheck="false">${escapeHtml(d.nome)}</span>
     <input type="date" class="pd-data" data-id="${d.id}" value="${escapeHtml(d.dataSolicitacao||'')}" aria-label="Aberta em">
     <button class="pd-cm" title="${ult?escapeHtml(ult.texto):'Adicionar comentário'}">${ult?`<span class="pd-cmtxt">${escapeHtml(ult.texto)}</span><span class="pd-nc">💬 ${nc}</span>`:'<span class="pd-cmvazio">+ comentar</span>'}</button>
     <span class="pd-acoes">
@@ -716,7 +716,7 @@ function rowHtml(d){
     </span>
   </div>`;
 }
-const PD_CABECALHO='<div class="pd-head"><span></span><span>Projeto</span><span>O que se espera</span><span>Pendência</span><span>Aberta em</span><span>Comentários</span><span></span></div>';
+const PD_CABECALHO='<div class="pd-head"><span></span><span>Projeto</span><span>Pendência</span><span>O que se espera</span><span>Aberta em</span><span>Comentários</span><span></span></div>';
 
 let feitasAberta=false;
 // uma lista só, sem separar por projeto: o projeto aparece ao passar o mouse no texto e dentro dos detalhes (⋯)
