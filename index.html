@@ -269,6 +269,7 @@ textarea{resize:vertical;min-height:70px}
         <input type="text" id="qaTexto" placeholder="Anote uma pendência e aperte Enter…" autocomplete="off">
         <select id="qaOnde" aria-label="Em qual projeto"></select>
         <button class="btn btn-primary" id="qaAdd">Adicionar</button>
+        <button class="btn" id="qaVarias" title="Colar uma lista, uma pendência por linha">Colar várias</button>
       </div>
 
       <div id="altaBox"></div>
@@ -469,6 +470,27 @@ textarea{resize:vertical;min-height:70px}
 </div>
 
 
+<!-- COLAR VÁRIAS PENDÊNCIAS -->
+<div class="overlay" id="ovVarias">
+  <div class="modal" style="width:640px">
+    <h3>Colar várias pendências</h3>
+    <div class="form-group">
+      <label>Projeto (para as linhas sem projeto)</label>
+      <select id="vProjeto"></select>
+    </div>
+    <div class="form-group">
+      <label>Uma pendência por linha</label>
+      <textarea id="vTexto" style="min-height:260px" placeholder="Cole aqui, uma pendência por linha.&#10;Comece a linha com ! para prioridade alta.&#10;Para escolher o projeto na própria linha: Teleinfo | Cobrar a Sheila…"></textarea>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-right">
+        <button class="btn" id="vCancel">Cancelar</button>
+        <button class="btn btn-primary" id="vAdd">Adicionar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -611,13 +633,52 @@ function ordenaPendencias(list){
   });
 }
 
-function novaPendencia(nome,grupo){
+function novaPendencia(nome,grupo,prioridade){
   const projeto=!!grupo&&grupo!==GRUPO_INTERNO;
   const agora=new Date().toISOString();
-  demandas.push({id:uid(),codigo:nextCodigo(),createdAt:agora,updatedAt:agora,nome,solicitante:'',
-    tipo:projeto?'Projeto':'Interno',projetoNome:projeto?grupo:'',prioridade:'Média',status:'afazer',
-    dataSolicitacao:todayStr(),observacoes:'',comentarios:[]});
+  const d={id:uid(),codigo:nextCodigo(),createdAt:agora,updatedAt:agora,nome,solicitante:'',
+    tipo:projeto?'Projeto':'Interno',projetoNome:projeto?grupo:'',prioridade:prioridade||'Média',status:'afazer',
+    dataSolicitacao:todayStr(),observacoes:'',comentarios:[]};
+  demandas.push(d);
   save();
+  return d;
+}
+
+// Colar várias: uma pendência por linha. "!" no começo = prioridade alta; "Projeto | texto" escolhe o projeto da linha.
+function abreVarias(){
+  const sel=document.getElementById('vProjeto');
+  sel.innerHTML=document.getElementById('qaOnde').innerHTML.replace('<option value="__outro__">Outro projeto…</option>','');
+  sel.value=document.getElementById('qaOnde').value!=='__outro__'?document.getElementById('qaOnde').value:GRUPO_INTERNO;
+  document.getElementById('vTexto').value='';
+  document.getElementById('ovVarias').classList.add('open');
+  document.getElementById('vTexto').focus();
+}
+function fechaVarias(){document.getElementById('ovVarias').classList.remove('open')}
+function adicionaVarias(){
+  const base=document.getElementById('vProjeto').value;
+  const linhas=document.getElementById('vTexto').value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  if(!linhas.length){toast('Cole pelo menos uma pendência');return}
+  const conhecidos=[GRUPO_INTERNO].concat(getAllProjetos());
+  let n=0;
+  linhas.forEach(l=>{
+    let alta=false,g=base,t=l;
+    if(t.startsWith('!')){alta=true;t=t.slice(1).trim()}
+    const m=t.match(/^([^|]{1,40})\|(.+)$/);
+    if(m){
+      const nome=m[1].trim();
+      const achado=nome.toLowerCase()==='interno'?GRUPO_INTERNO:conhecidos.find(p=>p.toLowerCase()===nome.toLowerCase());
+      g=achado||nome;
+      if(!achado)registrarProjetoCustom(nome);
+      t=m[2].trim();
+    }
+    if(!t)return;
+    novaPendencia(t,g,alta?'Alta':'Média');
+    n++;
+  });
+  fechaVarias();
+  preencheOnde();
+  renderAll();
+  toast(n+' pendência'+(n===1?'':'s')+' adicionada'+(n===1?'':'s'));
 }
 
 function projetoSelectHtml(d){
@@ -767,6 +828,9 @@ function adicionaDoTopo(){
   });
   raiz.addEventListener('toggle',e=>{ if(e.target.classList&&e.target.classList.contains('pd-done'))feitasAberta=e.target.open; },true);
   document.getElementById('qaAdd').addEventListener('click',adicionaDoTopo);
+  document.getElementById('qaVarias').addEventListener('click',abreVarias);
+  document.getElementById('vCancel').addEventListener('click',fechaVarias);
+  document.getElementById('vAdd').addEventListener('click',adicionaVarias);
 })();
 
 function escapeHtml(str){
