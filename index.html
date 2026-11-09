@@ -114,19 +114,6 @@ tbody tr:last-child td{border-bottom:none}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .form-group{margin-bottom:12px}
 .form-group label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:5px}
-.alta-box{background:#fff5f5;border:1px solid #f5c2c2;border-radius:var(--rl);padding:12px 16px;margin-bottom:18px}
-.alta-h{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--danger);margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.alta-h .n{background:var(--danger-l);color:var(--danger);border-radius:999px;padding:1px 9px;font-size:11px}
-.alta-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #f5c2c2;cursor:pointer}
-.alta-item:first-of-type{border-top:none}
-.alta-item input{width:16px;height:16px;flex-shrink:0;cursor:pointer}
-.alta-top{font-size:12px;color:var(--text2)}
-.alta-top b{color:var(--accent);font-size:13px}
-.alta-nome{font-weight:600;font-size:14px;margin-top:2px}
-.alta-subs{margin-top:5px;display:flex;flex-direction:column;gap:3px}
-.alta-sub{display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer}
-.alta-sub input{width:14px;height:14px;margin-top:2px;flex-shrink:0;cursor:pointer}
-.alta-feito{font-size:12px;color:var(--accent);margin-top:4px}
 .tr-alta{background:var(--danger-l)!important}
 .tr-alta td:first-child{box-shadow:inset 4px 0 0 var(--danger)}
 .tr-alta .task-cell .field-quick-edit{font-weight:600;color:var(--text)}
@@ -223,14 +210,14 @@ textarea{resize:vertical;min-height:70px}
 .pd-acoes{display:flex;justify-content:flex-end;gap:2px}
 .pd-acoes button{border:none;background:transparent;color:var(--text3);cursor:pointer;font:inherit;font-size:15px;line-height:1;padding:2px 4px;border-radius:4px;opacity:0}
 .pd-row:hover .pd-acoes button,.pd-acoes button:focus-visible,.pd-acoes button.on{opacity:1}
-.pd-acoes button.on{color:var(--danger)}
+.pd-acoes button.on{color:#EE8F8F}
 .pd-acoes button:hover{background:var(--surface2);color:var(--text)}
 .pd-row:hover{background:var(--bg)}
-.pd-row.alta{background:var(--danger-l);box-shadow:inset 4px 0 0 var(--danger)}
+.pd-row.alta{background:#FFF2F2;box-shadow:inset 4px 0 0 #F2A5A5}
 .pd-text:focus{background:#fff;box-shadow:0 0 0 2px var(--accent)}
 .pd-row.alta .pd-text{font-weight:600}
 .pd-row.feita .pd-text{text-decoration:line-through;color:var(--text3)}
-.pd-row .pd-flag.on:hover{color:var(--danger)}
+.pd-row .pd-flag.on:hover{color:#E57373}
 .pd-row .pd-del:hover{color:var(--danger)}
 .pd-vazio{padding:22px 16px;font-size:13.5px;color:var(--text3)}
 .pd-done{margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
@@ -274,7 +261,6 @@ textarea{resize:vertical;min-height:70px}
         <button class="btn" id="qaVarias" title="Colar uma lista, uma pendência por linha">Colar várias</button>
       </div>
 
-      <div id="altaBox"></div>
 
       <div class="pd-board" id="pendBoard"></div>
       <div id="pendDone"></div>
@@ -735,27 +721,8 @@ function renderBoard(){
   });
 }
 
-// Bloco no topo: tudo que está em prioridade Alta e ainda aberto
-function renderAltaBox(){
-  const el=document.getElementById('altaBox'); if(!el)return;
-  const lista=ordenaPendencias(demandas.filter(d=>d.prioridade==='Alta'&&!isFeita(d)));
-  if(!lista.length){el.innerHTML='';return;}
-  const itens=lista.map(d=>'<div class="alta-item" data-id="'+d.id+'">'
-    +'<input type="checkbox" class="alta-check" data-id="'+d.id+'" title="Marcar como feita">'
-    +'<div style="flex:1;min-width:0"><div class="alta-top"><b>'+escapeHtml(grupoDe(d))+'</b></div>'
-    +'<div class="alta-nome">'+escapeHtml(d.nome)+'</div></div></div>');
-  el.innerHTML='<div class="alta-box"><div class="alta-h">⚑ Prioridade alta <span class="n">'+lista.length+'</span></div>'+itens.join('')+'</div>';
-  el.querySelectorAll('.alta-item').forEach(it=>it.addEventListener('click',e=>{ if(e.target.closest('.alta-check'))return; openModal(it.dataset.id); }));
-  el.querySelectorAll('.alta-check').forEach(cb=>cb.addEventListener('change',e=>{
-    e.stopPropagation();
-    const d=achaDemanda(cb.dataset.id); if(!d)return;
-    d.status='concluido'; d.updatedAt=new Date().toISOString(); save(); renderAll();
-  }));
-}
-
 function renderAll(){
   renderBoard();
-  renderAltaBox();
   renderNovosProjetos();
   renderAlocacaoResumo();
 }
@@ -826,7 +793,7 @@ function adicionaDoTopo(){
     const campo=t.dataset.campo||'nome';
     const txt=t.textContent.replace(/\s+/g,' ').trim();
     if(campo==='nome'&&!txt){t.textContent=d.nome;return}
-    if(txt!==(d[campo]||'')){d[campo]=txt; d.updatedAt=new Date().toISOString(); save(); renderAltaBox();}
+    if(txt!==(d[campo]||'')){d[campo]=txt; d.updatedAt=new Date().toISOString(); save();}
   });
   raiz.addEventListener('keydown',e=>{
     const t=e.target;
