@@ -205,7 +205,9 @@ textarea{resize:vertical;min-height:70px}
 .pd-card>header h3{font-size:14px;font-weight:700;color:var(--accent)}
 .pd-card>header .n{font-size:11px;font-weight:700;background:var(--accent);color:#fff;border-radius:999px;padding:0 8px;line-height:18px}
 .pd-scroll{overflow-x:auto}
-.pd-head,.pd-row{display:grid;grid-template-columns:22px minmax(230px,2.4fr) 170px 128px minmax(200px,2fr) 84px;gap:12px;align-items:start;min-width:900px;padding:9px 12px 9px 16px}
+.pd-head,.pd-row{display:grid;grid-template-columns:22px 150px minmax(210px,2fr) minmax(190px,1.8fr) 124px minmax(150px,1.3fr) 84px;gap:12px;align-items:start;min-width:1120px;padding:9px 12px 9px 16px}
+.pd-pend{color:var(--text2)}
+.pd-pend:empty:before{content:'+ pendência';color:var(--text3)}
 .pd-head{align-items:center;padding-top:8px;padding-bottom:8px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text3);background:var(--surface2);border-bottom:1px solid var(--border)}
 .pd-row{border-top:1px solid var(--border)}
 .pd-check{width:17px;height:17px;margin-top:2px;cursor:pointer;accent-color:var(--accent)}
@@ -266,7 +268,7 @@ textarea{resize:vertical;min-height:70px}
       </div>
 
       <div class="qa">
-        <input type="text" id="qaTexto" placeholder="Anote uma pendência e aperte Enter…" autocomplete="off">
+        <input type="text" id="qaTexto" placeholder="Anote o que se espera e aperte Enter…" autocomplete="off">
         <select id="qaOnde" aria-label="Em qual projeto"></select>
         <button class="btn btn-primary" id="qaAdd">Adicionar</button>
         <button class="btn" id="qaVarias" title="Colar uma lista, uma pendência por linha">Colar várias</button>
@@ -324,8 +326,12 @@ textarea{resize:vertical;min-height:70px}
     <h3 id="modalTitle">Nova demanda</h3>
 
     <div class="form-group">
-      <label>Nome da tarefa *</label>
-      <input type="text" id="fNome" placeholder="Ex: Renovar apólice de seguro">
+      <label>O que se espera *</label>
+      <input type="text" id="fNome" placeholder="Ex: Sheila devolve a planilha de requisitos até 10/11">
+    </div>
+    <div class="form-group">
+      <label>Pendência</label>
+      <input type="text" id="fPendencia" placeholder="O que está pendente e com quem">
     </div>
 
     <div id="camposCompletosDemanda" class="modal-cols">
@@ -480,7 +486,7 @@ textarea{resize:vertical;min-height:70px}
     </div>
     <div class="form-group">
       <label>Uma pendência por linha</label>
-      <textarea id="vTexto" style="min-height:260px" placeholder="Cole aqui, uma pendência por linha.&#10;Comece a linha com ! para prioridade alta.&#10;Para escolher o projeto na própria linha: Teleinfo | Cobrar a Sheila…"></textarea>
+      <textarea id="vTexto" style="min-height:260px" placeholder="Cole aqui, uma pendência por linha.&#10;Comece a linha com ! para prioridade alta.&#10;Para escolher o projeto e a pendência na própria linha: Teleinfo | O que se espera | Pendência"></textarea>
     </div>
     <div class="modal-footer">
       <div class="modal-footer-right">
@@ -661,7 +667,7 @@ function adicionaVarias(){
   const conhecidos=[GRUPO_INTERNO].concat(getAllProjetos());
   let n=0;
   linhas.forEach(l=>{
-    let alta=false,g=base,t=l;
+    let alta=false,g=base,t=l,pend='';
     if(t.startsWith('!')){alta=true;t=t.slice(1).trim()}
     const m=t.match(/^([^|]{1,40})\|(.+)$/);
     if(m){
@@ -669,10 +675,13 @@ function adicionaVarias(){
       const achado=nome.toLowerCase()==='interno'?GRUPO_INTERNO:conhecidos.find(p=>p.toLowerCase()===nome.toLowerCase());
       g=achado||nome;
       if(!achado)registrarProjetoCustom(nome);
-      t=m[2].trim();
+      const resto=m[2].split('|');
+      t=resto[0].trim();
+      pend=resto.slice(1).join('|').trim();
     }
     if(!t)return;
-    novaPendencia(t,g,alta?'Alta':'Média');
+    const d=novaPendencia(t,g,alta?'Alta':'Média');
+    if(pend){d.pendencia=pend;save()}
     n++;
   });
   fechaVarias();
@@ -695,8 +704,9 @@ function rowHtml(d){
   const feita=isFeita(d), nc=(d.comentarios||[]).length, ult=ultimoComentario(d);
   return `<div class="pd-row${feita?' feita':''}${d.prioridade==='Alta'&&!feita?' alta':''}" data-id="${d.id}">
     <input type="checkbox" class="pd-check" ${feita?'checked':''} title="${feita?'Reabrir':'Marcar como feita'}">
-    <span class="pd-text" data-id="${d.id}" spellcheck="false">${escapeHtml(d.nome)}</span>
     ${projetoSelectHtml(d)}
+    <span class="pd-text" data-id="${d.id}" data-campo="nome" spellcheck="false">${escapeHtml(d.nome)}</span>
+    <span class="pd-text pd-pend" data-id="${d.id}" data-campo="pendencia" spellcheck="false">${escapeHtml(d.pendencia||'')}</span>
     <input type="date" class="pd-data" data-id="${d.id}" value="${escapeHtml(d.dataSolicitacao||'')}" aria-label="Aberta em">
     <button class="pd-cm" title="${ult?escapeHtml(ult.texto):'Adicionar comentário'}">${ult?`<span class="pd-cmtxt">${escapeHtml(ult.texto)}</span><span class="pd-nc">💬 ${nc}</span>`:'<span class="pd-cmvazio">+ comentar</span>'}</button>
     <span class="pd-acoes">
@@ -706,7 +716,7 @@ function rowHtml(d){
     </span>
   </div>`;
 }
-const PD_CABECALHO='<div class="pd-head"><span></span><span>Pendência</span><span>Projeto</span><span>Aberta em</span><span>Comentários</span><span></span></div>';
+const PD_CABECALHO='<div class="pd-head"><span></span><span>Projeto</span><span>O que se espera</span><span>Pendência</span><span>Aberta em</span><span>Comentários</span><span></span></div>';
 
 let feitasAberta=false;
 // uma lista só, sem separar por projeto: o projeto aparece ao passar o mouse no texto e dentro dos detalhes (⋯)
@@ -813,15 +823,16 @@ function adicionaDoTopo(){
   raiz.addEventListener('focusout',e=>{
     const t=e.target.closest&&e.target.closest('.pd-text'); if(!t)return;
     const d=achaDemanda(t.dataset.id); if(!d)return;
+    const campo=t.dataset.campo||'nome';
     const txt=t.textContent.replace(/\s+/g,' ').trim();
-    if(!txt){t.textContent=d.nome;return}
-    if(txt!==d.nome){d.nome=txt; d.updatedAt=new Date().toISOString(); save(); renderAltaBox();}
+    if(campo==='nome'&&!txt){t.textContent=d.nome;return}
+    if(txt!==(d[campo]||'')){d[campo]=txt; d.updatedAt=new Date().toISOString(); save(); renderAltaBox();}
   });
   raiz.addEventListener('keydown',e=>{
     const t=e.target;
     if(t.classList.contains('pd-text')){
       if(e.key==='Enter'){e.preventDefault();t.blur()}
-      else if(e.key==='Escape'){const d=achaDemanda(t.dataset.id); if(d)t.textContent=d.nome; t.blur()}
+      else if(e.key==='Escape'){const d=achaDemanda(t.dataset.id); if(d)t.textContent=d[t.dataset.campo||'nome']||''; t.blur()}
     }else if(t.id==='qaTexto'&&e.key==='Enter'){
       e.preventDefault(); adicionaDoTopo();
     }
@@ -846,6 +857,7 @@ function openModal(id,focaComentario){
 
   document.getElementById('modalTitle').textContent=d?`Pendência #${d.codigo||'—'} · ${grupoDe(d)}`:'Nova demanda';
   document.getElementById('fNome').value=d?d.nome:'';
+  document.getElementById('fPendencia').value=d?(d.pendencia||''):'';
   document.getElementById('fSolicitante').value=d?(d.solicitante||''):'';
   document.getElementById('fTipoSel').value=d?(d.tipo||'Interno'):'Interno';
   setProjetoNomeValue(d?(d.projetoNome||''):'');
@@ -1166,6 +1178,7 @@ function saveDemanda(){
   }
   const payload={
     nome,
+    pendencia:document.getElementById('fPendencia').value.trim(),
     solicitante:document.getElementById('fSolicitante').value.trim(),
     tipo:document.getElementById('fTipoSel').value,
     projetoNome:document.getElementById('fTipoSel').value==='Projeto'?getProjetoNomeValue():'',
